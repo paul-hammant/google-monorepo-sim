@@ -1,0 +1,9 @@
+.aider.chat*
+.aider.input*
+.aider.tags*
+.idea/
+target/
+.idea/
+__pycache__/
+*.iml
+/.buildStepsDoneLastExecution

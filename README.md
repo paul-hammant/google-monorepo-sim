@@ -11,13 +11,14 @@ Two branches in this repo show simulations of monorepo concepts with some source
 
 Specifically, the Java and Rust sources are identical in both, but in different directories. The builld files are different.
 
-## Directed Acyclic Graph Modular Monorepo
+## Depth-first recursive Modular Monorepo
 
 ## Prerequisites
 
 Install these and set paths etc for your OS.
 
 * JDK 11 or above. [Linux instructions](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html)
+* Maven 3. Do `sudo apt install maven`
 * Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html) but also do `sudo apt install build-essential`
 * Bash
 
@@ -25,18 +26,25 @@ Note: If on Windows, use WSL or Git-Bash to be able to use `Bash`
 
 ## Examples of building and running contrived apps
 
-This build technology doesn't have a name - it uses shell scripts and it just for the simulation
-
 All tests for one app and all deps, them making the fat jar, then executing it
 
 ```
-$ ./javatests/applications/monorepos_rule/.dist.sh
+$ mvn clean
+$ mvn package -pl applications/monorepos_rule -am
 ```
 
-Running that app for contrived output to stdout:
+That is an optimized build that targets one app, whereas the classic `mvn package` from root (no additional args) would compile and test all modules encountered.
+It also has a lot of logging.  This one is quieter, just for comparison's sake:
 
 ```
-$ java -Djava.library.path=. -jar ./target/applications/monorepos_rule/bin/monorepos-rule.jar
+$ quieter-mvn package -pl applications/monorepos_rule -am
+```
+
+
+Running that app:
+
+```
+$ java -Djava.library.path=. -cp applications/monorepos_rule/target/monorepos-rule-1.0-SNAPSHOT-jar-with-dependencies.jar applications.monorepos_rule.MonoreposRule
 ```
 
 Output looks like
@@ -47,35 +55,3 @@ MonoreposRule instance created:
 M(O)N(O)R(E)P(O)SR(U)L(E)
 MonoreposRule{m=class components.nasal.M, o=class components.vowels.O, n=class components.nasal.N, o2=class components.vowels.O, r=class components.sonorants.R, e=class components.vowels.E, p=class components.voiceless.P, o3=class components.vowels.O, s=class components.fricatives.S, r2=class components.sonorants.R, u=class components.vowels.U, l=class components.sonorants.L, e2=class components.vowels.E}
 ```
-
-All tests for the other app and all deps, them making the fat jar, then executing it 
-
-```
-$ ./javatests/applications/directed_graph_build_systems_are_cool/.dist.sh
-
-java -Djava.library.path=. -jar ./target/applications/directed_graph_build_systems_are_cool/bin/directed-graph-build-systems-are-cool.jar
-
-libvowelbase.so extracted successfully.
-DirectedGraphBuildSystemsAreCool instance created:
-D(I)R(E)CT(E)DGR(A)PHB(U)(I)LDSYST(E)MS(A)R(E)C(O)(O)L
-DirectedGraphBuildSystemsAreCool{d=class components.voiced.D, i=class components.vowels.I, ...
-```
-
-You can target any `.dist.sh` script anywhere, or `.tests.sh` or `.compile.sh` where you see them.
-
-You can do that from the root folder. You can also do it by cd-ing deeper into the dir structure.
-
-Any target can invoke any of its dependencies build files anywhere else in the relative dir structure.
-
-If you run anything a second time, compile and test invocation are skipped, and there will be a note in the build log to that effect.
-
-# Sparse-checkout feature (that Google do)
-
-There's also a use of Git sparse-checkout
-
-```
-.shared-build-scripts/gcheckout.sh --init
-.shared-build-scripts/gcheckout.sh add javatests/applications/monorepos_rule
-```
-
-You'd do regular source edit and build steps after that.

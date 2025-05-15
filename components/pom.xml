@@ -1,0 +1,40 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.paulhammant.monorepo-sim</groupId>
+    <artifactId>components</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>consonants</module>
+        <module>fricatives</module>
+        <module>glides</module>
+        <module>labiodental</module>
+        <module>nasal</module>
+        <module>sibilants</module>
+        <module>sonorants</module>
+        <module>velar</module>
+        <module>voiced</module>
+        <module>voiceless</module>
+        <module>vowels</module>
+        <module>vowel_base</module>
+    </modules>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M8</version> <!-- use the latest stable version -->
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>  <!-- Default pattern -->
+                        <include>**/*Tests.java</include> <!-- Custom pattern -->
+                    </includes>
+                </configuration>
+            </plugin>
+
+        </plugins>
+    </build>
+</project>

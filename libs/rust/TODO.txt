@@ -1,5 +1,0 @@
-We should have rust libs here (without a version in the file name for lock-step upgrade), and not use cargo for builds.
-
-You can't just rename jni-ab34cd28ff4.rlib to jni.rlib though as cargo/rustc place the same version string in a blog within.
-
-Google must've "vendored" Rust deps into their Piper VCS system.

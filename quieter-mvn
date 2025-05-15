@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mvn --batch-mode --no-transfer-progress -Dstyle.color=never "$@" \
+| grep --color=never -vE '^\[INFO\] --------------------------------\[[^]]+\]---------------------------------$' \
+| grep --color=never -vE '^\[INFO\] -+$' \
+| grep --color=never -vE '^\[INFO\] -+< .+ >-+$' \
+| grep --color=never '\-\-\-' \
+| sed -E 's/.*--- ([^:]+):[^:]+:([^ ]+).*@ ([^ ]+) ---/\2 for \3/' \
+| sed 's/^single /uberJar /' \
+| sed 's/^compile for /java compile for /' \
+| sed 's/^testCompile for /java tests compile for /' \
+| sed 's/^exec for /rust compile for /' \
+| grep -vE '^(resources|process-resources|testResources) '

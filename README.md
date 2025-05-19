@@ -2,14 +2,14 @@
 
 This repo goes hand in hand with my book: [Trunk-Based Development And Branch By Abstraction ](https://tbd-book.com/) and a [short video talking about it](https://tbd-book.com/gmr-vid) 
 
-It purports to show a monorepo in the style that Google use internally - with a novel expand/contract featire that maps to Git's sparse-checkout.
+It purports to show a monorepo in the style that Google use internally - with a novel expand/contract feature that maps to Git's sparse-checkout.
 
 Two branches in this repo show simulations of monorepo concepts with some source files in common, but not all.
 
 2. Directed Acyclic Graph Modular Monorepo - [trunk](https://github.com/paul-hammant/google-monorepo-sim/tree/trunk)
 1. Depth-First Recursive Modular Monorepo - [depth-first_recursive_modular_monorepo](https://github.com/paul-hammant/google-monorepo-sim/tree/depth-first_recursive_modular_monorepo)
 
-Specifically, the Java and Rust sources are identical in both, but in different directories. The builld files are different.
+Specifically, the Java and Rust sources are identical in both, but in different directories. The build files are different.
 
 ## Directed Acyclic Graph Modular Monorepo
 
@@ -27,7 +27,7 @@ Note: If on Windows, use WSL or Git-Bash to be able to use `Bash`
 
 This build technology doesn't have a name - it uses shell scripts and it just for the simulation
 
-All tests for one app and all deps, them making the fat jar, then executing it
+All tests for one app and all deps, then make the fat jar, then executing it
 
 ```
 $ ./javatests/applications/monorepos_rule/.dist.sh

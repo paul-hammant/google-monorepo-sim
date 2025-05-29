@@ -1,3 +1,5 @@
+set -eo pipefail
+
 # Calculate the highest timestamp for source files
 source_timestamp=$(find . -mindepth 1 -name "*" -printf '%T@\n' | sort -n | tail -1)-
 previous_timestamp=$(cat $root/target/$module/test-classes/$module/.timestamp 2>/dev/null || echo 0)

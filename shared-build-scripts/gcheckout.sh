@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -eo pipefail
 # Function to reset the sparse checkout configuration
 reset_sparse_checkout() {
     echo "Resetting sparse checkout configuration..."

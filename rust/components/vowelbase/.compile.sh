@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eo pipefail
 script_source="$(realpath "${BASH_SOURCE[0]}")"
 root=$(echo "$script_source" | sed 's|\(/.*\)/rust/.*|\1|')
 module="$(dirname ${script_source#*/rust/})"

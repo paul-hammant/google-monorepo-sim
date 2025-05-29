@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eo pipefail
 root=$(pwd)
 echo "New build:"
 echo "" > "$root/.buildStepsDoneLastExecution"

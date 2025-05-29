@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -eo pipefail
 script_source="$(realpath "${BASH_SOURCE[0]}")"
 root=$(echo "$script_source" | sed 's|\(/.*\)/javatests/.*|\1|')
 echo "Running all .tests.sh in $(pwd) subdirs"

@@ -1,6 +1,10 @@
 #!/bin/bash
+set -eo pipefail
 root=$(pwd)
 echo "New build:"
 echo "" > "$root/.buildStepsDoneLastExecution"
 echo "Running all .compile.sh in $(pwd) subdirs"
-find . -mindepth 2 -name ".compile.sh" -exec bash -c 'bash "$0" "$1"' {} "$root/.buildStepsDoneLastExecution" \;
+find . -mindepth 2 -name '.compile.sh' -print0 \
+  | while IFS= read -r -d '' script; do
+      bash "$script" "$root/.buildStepsDoneLastExecution"
+    done

@@ -1,7 +1,7 @@
 # Calculate the highest timestamp for source files
 
 set -e
-source_timestamp=$(find . -name "*" -printf '%T@\n' | sort -n | tail -1)
+source_timestamp=$(find . -mindepth 1 -name "*" -printf '%T@\n' | sort -n | tail -1)
 previous_timestamp=$(cat $root/target/$module/classes/$module/.timestamp 2>/dev/null || echo 0)
 # Compare timestamps and compile if necessary
 if [[ "$source_timestamp" != "$previous_timestamp" ]]; then

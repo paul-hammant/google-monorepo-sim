@@ -18,16 +18,13 @@ mkdir -p $root/target/$module/bin
 echo "Making $module distribution jar"
 jar cfM $root/target/$module/bin/monorepos-rule.jar \
     -C $root/target/$module/classes . \
-    -C $root/target/components/consonants/classes . \
     -C $root/target/components/fricatives/classes . \
-    -C $root/target/components/glides/classes . \
     -C $root/target/components/nasal/classes . \
     -C $root/target/components/sonorants/classes . \
-    -C $root/target/components/velar/classes . \
-    -C $root/target/components/voiced/classes . \
     -C $root/target/components/voiceless/classes . \
     -C $root/target/components/vowelbase/classes . \
     -C $root/target/components/vowelbase/lib/release libvowelbase.so \
+    -C $root/target/components/nasal/lib/ libgonasal.so \
     -C $root/target/components/vowels/classes .
 
 echo "To run this application, do:  java -Djava.library.path=. -jar ./target/applications/monorepos_rule/bin/monorepos-rule.jar"

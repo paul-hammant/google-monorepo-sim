@@ -33,6 +33,7 @@ CLASSPATH=$(
 
 LD_LIB_PATH=(
   "$root/target/components/vowelbase/lib/release"
+  "$root/target/components/nasal/lib"
 )
 
 # Define additional binary dependencies (external libraries like junit, hamcrest)

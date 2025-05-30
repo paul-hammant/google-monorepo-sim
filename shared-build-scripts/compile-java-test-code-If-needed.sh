@@ -13,7 +13,12 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
     testClasses=$(find $root/target/$module/test-classes -name "*Tests.class" | sed "s#$root/target/$module/test-classes/##g" | sed 's|/|.|g' | sed 's|.class$||' | sed "s|^target.test-classes\.||")
     echo "$CLASSPATH:$LIBS_CLASSPATH" | sed 's/:/\n/g' > $root/target/$module/javatestdeps
-    java -Djava.library.path="$LD_LIB_PATH" -cp "$CLASSPATH:$LIBS_CLASSPATH" org.junit.runner.JUnitCore $testClasses
+
+    IFS=':'
+    LD_LIB_PATH_STRING="${LD_LIB_PATH[*]}"
+    unset IFS    # restore default
+
+    java -Djava.library.path="$LD_LIB_PATH_STRING" -cp "$CLASSPATH:$LIBS_CLASSPATH" org.junit.runner.JUnitCore $testClasses
     echo $source_timestamp > $root/target/$module/test-classes/$module/.timestamp
 else
     echo "$relative_script_path: skipping compilation of test code (not changed)"

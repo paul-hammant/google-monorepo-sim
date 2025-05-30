@@ -1,6 +1,7 @@
 package applications.monorepos_rule;
 
 import components.fricatives.S;
+import components.nasal.GoNasalLibraryUnZipper;
 import components.nasal.M;
 import components.nasal.N;
 import components.sonorants.L;
@@ -47,6 +48,9 @@ public class MonoreposRule {
 
         VowelBaseLibraryUnZipper.unzip();
         VowelBase.loadLibrary();
+
+        GoNasalLibraryUnZipper.unzip();
+        GoNasalLibraryUnZipper.loadLibrary();
 
         System.out.println("main() .. MonoreposRule instance created:");
         System.out.flush();

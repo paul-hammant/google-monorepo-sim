@@ -24,6 +24,18 @@ Install these and set paths etc for your OS.
 * Kotlin which if you're on Debian you'll want to install [via SDKMan](https://sdkman.io/sdks/kotlin) as the 'apt' installed one is too old
 * Bash
 
+Also, "Go" via this oneliner as sdk-man doesn't have it:
+
+``` 
+sudo rm -rf /usr/local/go && \
+curl -o go.tar.gz https://go.dev/dl/go1.24.3.linux-amd64.tar.gz && \
+sudo tar -C /usr/local -xzf go.tar.gz && \
+rm go.tar.gz && \
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile && \
+exec $SHELL -l && \
+go version
+```
+
 Note: If on Windows, use WSL or Git-Bash to be able to use `Bash`
 
 ## Examples of building and running contrived apps

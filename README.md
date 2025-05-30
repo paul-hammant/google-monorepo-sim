@@ -9,7 +9,9 @@ Two branches in this repo show simulations of monorepo concepts with some source
 2. Directed Acyclic Graph Modular Monorepo - [trunk](https://github.com/paul-hammant/google-monorepo-sim/tree/trunk)
 1. Depth-First Recursive Modular Monorepo - [depth-first_recursive_modular_monorepo](https://github.com/paul-hammant/google-monorepo-sim/tree/depth-first_recursive_modular_monorepo)
 
-Specifically, the Java and Rust sources are identical in both, but in different directories. The build files are different.
+Specifically, the Java, and Rust sources are identical in both, but in different directories. 
+The build files are different. There's newer Kotlin modules in trunk, that are not duplicated 
+in the depth-first_recursive_modular_monorepo branch 
 
 ## Directed Acyclic Graph Modular Monorepo
 
@@ -18,7 +20,8 @@ Specifically, the Java and Rust sources are identical in both, but in different 
 Install these and set paths etc for your OS.
 
 * JDK 11 or above. [Linux instructions](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html)
-* Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html) but also do `sudo apt install build-essential`
+* Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html) but also do `sudo apt install build-essential` first
+* Kotlin which if you're on Debian you'll want to install [via SDKMan](https://sdkman.io/sdks/kotlin) as the 'apt' installed one is too old
 * Bash
 
 Note: If on Windows, use WSL or Git-Bash to be able to use `Bash`

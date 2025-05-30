@@ -14,7 +14,7 @@ deps=(
   "module:java/components/fricatives"
   "module:java/components/glides"
   "module:java/components/nasal"
-  "module:java/components/sonorants"
+  "module:kotlin/components/sonorants"
   "module:java/components/velar"
   "module:java/components/voiced"
   "module:java/components/voiceless"
@@ -31,6 +31,7 @@ CLASSPATH=$(
   {
     echo "$root/target/$module/classes"
     for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/javadeps" 2>/dev/null; done
+    for dep in "${deps[@]}"; do cat "$root/target/${dep#module:kotlin/}/javadeps" 2>/dev/null; done
   } | sort -u | paste -sd ":" -
 )
 

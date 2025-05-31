@@ -1,6 +1,7 @@
+#:package Shouldly 4.3.0
 #:library ../../../target/components/greek/bin/components_greek.dll
 
-using Foo.Bar;
+using Components.Greek;
 
 namespace Components.Tests
 {

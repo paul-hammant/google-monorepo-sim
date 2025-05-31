@@ -1,4 +1,4 @@
-#:package ../../../target/components/greek/bin/components_greek.dll
+#:library ../../../target/components/greek/bin/components_greek.dll
 
 using Foo.Bar;
 

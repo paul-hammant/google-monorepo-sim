@@ -1,4 +1,4 @@
-#:package Foo.Bar from ../../../target/components/Foo/Bar/foo_bar.dll
+#:package ../../../target/components/greek/bin/components_greek.dll
 
 using Foo.Bar;
 

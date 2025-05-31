@@ -17,7 +17,19 @@ mkdir -p "$GO_OUTPUT_LIB_DIR"
 SHARED_LIB_FILENAME="libgonasal.so"
 GO_OUTPUT_PATH="$GO_OUTPUT_LIB_DIR/$SHARED_LIB_FILENAME"
 
-# Ensure module is tidy
+# Timestamp-based compilation
+timestamp_file="$GO_OUTPUT_LIB_DIR/.timestamp"
+raw_source_timestamp=$(find . -mindepth 1 -name "*.go" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
+source_timestamp=${raw_source_timestamp:-0}
+previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
+
+if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
+    echo "$relative_script_path: compiling Go prod code"
+    # Ensure module is tidy
 go mod tidy
 
 go build -buildmode=c-shared -o "$GO_OUTPUT_PATH" $(find . -maxdepth 1 -name "*.go" -not -name "*_test.go")
+    echo "$source_timestamp" > "$timestamp_file"
+else
+    echo "$relative_script_path: skipping compilation of Go prod code (not changed)"
+fi

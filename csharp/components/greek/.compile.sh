@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+
+script_source="$(realpath "${BASH_SOURCE[0]}")"
+root=$(echo "$script_source" | sed 's|\(/.*\)/csharp/.*|\1|')
+module="$(dirname ${script_source#*/csharp/})"
+module_source_dir="$(dirname "$script_source")"
+relative_script_path="${script_source#$root/}"
+source $root/shared-build-scripts/init.sh
+cd $module_source_dir
+
+# Create directory for compiled binaries
+mkdir -p $root/target/$module/bin
+
+# Compile the C# component using Roslyn
+echo "$relative_script_path: compiling C# component with Roslyn"
+
+source "$root/shared-build-scripts/calc-dotnet-version-vars.sh"
+
+REF=~/.dotnet/packs/Microsoft.NETCore.App.Ref/$DOTNET_FRAMEWORK_VER/ref/net10.0/
+
+mkdir -p "$root/target/$module/bin"
+dotnet exec ~/.dotnet/sdk/$DOTNET_SDK_VER/Roslyn/bincore/csc.dll \
+    -nologo \
+    -langversion:latest \
+    -out:"$root/target/$module/bin/components_greek.dll" \
+    -target:library \
+    -recurse:"$module_source_dir/*.cs" \
+    -reference:$HOME/.dotnet/shared/Microsoft.NETCore.App/$DOTNET_FRAMEWORK_VER/System.Private.CoreLib.dll \
+    -reference:$REF/System.Runtime.dll \
+    -reference:$REF/netstandard.dll \
+    -reference:"$HOME/.dotnet/shared/Microsoft.NETCore.App/$DOTNET_FRAMEWORK_VER/System.Runtime.dll" \
+    -reference:"$HOME/.dotnet/shared/Microsoft.NETCore.App/$DOTNET_FRAMEWORK_VER/mscorlib.dll"

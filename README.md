@@ -22,6 +22,7 @@ Install these and set paths etc for your OS.
 * JDK 11 or above. [Linux instructions](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html)
 * Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html) but also do `sudo apt install build-essential` first
 * Kotlin which if you're on Debian you'll want to install [via SDKMan](https://sdkman.io/sdks/kotlin) as the 'apt' installed one is too old
+* .NET 10 SDK. [Install is detailed here](https://learn.microsoft.com/en-us/dotnet/core/install/linux-scripted-manual#scripted-install).
 * Bash
 
 Also, "Go" via this oneliner as sdk-man doesn't have it:

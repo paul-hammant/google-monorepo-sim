@@ -18,12 +18,12 @@ previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
     "$root/go/$module/.compile.sh" $root/.buildStepsDoneLastExecution
 
-# Run Go tests
-echo "$relative_script_path: running Go tests..."
+    # Run Go tests
+    echo "$relative_script_path: running Go tests..."
 
-LD_LIBRARY_PATH="$root/target/components/nasal/lib:$LD_LIBRARY_PATH" go test -v .
+    LD_LIBRARY_PATH="$root/target/components/nasal/lib:$LD_LIBRARY_PATH" go test -v .
 
-echo "$relative_script_path: Go tests completed successfully."
+    echo "$relative_script_path: Go tests completed successfully."
     # Run Go tests
     echo "$relative_script_path: running Go tests..."
 

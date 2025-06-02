@@ -30,7 +30,6 @@ LIBS_CLASSPATH=$(
     done
   } | sort -u | paste -sd ":" -
 )
-echo "$relative_script_path: compiling C# test code with Roslyn"
 
 source "$root/shared-build-scripts/calc-dotnet-version-vars.sh"
 
@@ -39,8 +38,9 @@ REF=~/.dotnet/packs/Microsoft.NETCore.App.Ref/$DOTNET_FRAMEWORK_VER/ref/net10.0/
 OTHER_REF=~/.dotnet/packs/Microsoft.NETCore.App.Ref/$DOTNET_FRAMEWORK_VER/ref/net10.0/
 
 # Run the tests using dotnet run
-echo "$relative_script_path: running C# tests with dotnet run"
+echo "$relative_script_path: running C# tests with dotnet run <srcfile>"
 
 dotnet run GreekTests.cs
-# TODO: add package dep for comppnents/greek
+#dotnet run QuickTests.cs
+# TODO: add package dep for compnents/greek
 

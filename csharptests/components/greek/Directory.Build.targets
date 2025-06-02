@@ -1,0 +1,11 @@
+<Project>
+
+  <ItemGroup>
+<!--     <LibraryReference Include="../../../target/components/greek/bin/components_greek.dll" /> -->
+      <Reference Include="components_greek">
+          <HintPath>../../../target/components/greek/bin/components_greek.dll</HintPath>
+      </Reference>
+  </ItemGroup>
+
+
+</Project>

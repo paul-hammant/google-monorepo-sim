@@ -1,9 +1,8 @@
 #:package Shouldly 4.3.0
-#:library ../../../target/components/greek/bin/components_greek.dll
 
 using Components.Greek;
 
-namespace Components.Tests
+namespace Components.Greek.Tests
 {
     public class GreekTests
     {

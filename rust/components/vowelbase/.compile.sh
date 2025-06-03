@@ -18,6 +18,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
      # todo - should use rustc and also source libs from root/libs/rust (not cargo)
     cargo build --release --target-dir="$root/target/$module/lib"
     echo $source_timestamp > $root/target/$module/lib/.timestamp
+    echo -n "$root/target/$module/lib/release/libvowelbase.so" > $root/target/$module/ldlibdeps
 else
     echo "$relative_script_path: skipping compilation of prod code (not changed)"
 fi

@@ -17,10 +17,19 @@ printf "Manifest-Version: 1.0\nMain-Class: applications.monorepos_rule.Monorepos
 mkdir -p $root/target/$module/bin
 echo "Making $module distribution jar"
 
-jar cfM $root/target/$module/bin/monorepos-rule.jar \
-    -C $root/target/$module/classes . \
-    $(while IFS= read -r line; do echo "-C $line ."; done < "$root/target/$module/javadeps") \
-    -C $root/target/components/vowelbase/lib/release libvowelbase.so \
-    -C $root/target/components/nasal/lib/ libgonasal.so
+
+args=(-C "$root/target/$module/classes" .)
+
+while IFS= read -r line; do
+  [ -n "$line" ] && args+=(-C "$line" .)
+done < "$root/target/$module/jvmdeps"
+
+while IFS= read -r line; do
+  dir=$(dirname "$line")
+  file=$(basename "$line")
+  [ -n "$line" ] && args+=(-C "$dir" "$file")
+done < "$root/target/$module/ldlibdeps"
+
+jar cfM "$root/target/$module/bin/monorepos-rule.jar" "${args[@]}"
 
 echo "To run this application, do:  java -Djava.library.path=. -jar ./target/applications/monorepos_rule/bin/monorepos-rule.jar"

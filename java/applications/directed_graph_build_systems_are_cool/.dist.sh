@@ -19,8 +19,7 @@ echo "Making $module distribution (jar)"
 
 jar cfM $root/target/$module/bin/directed-graph-build-systems-are-cool.jar \
     -C $root/target/$module/classes . \
-    $(while IFS= read -r line; do echo "-C $line ."; done < "$root/target/$module/javadeps") \
-    -C $root/target/components/vowelbase/lib/release libvowelbase.so \
-    -C $root/target/components/nasal/lib/ libgonasal.so
+    $(while IFS= read -r line; do echo "-C $line ."; done < "$root/target/$module/jvmdeps") \
+    $(while IFS= read -r line; do echo "-C $line ."; done < "$root/target/$module/ldlibdeps")
 
 echo "To run this application, do:  java -Djava.library.path=. -jar ./target/applications/directed_graph_build_systems_are_cool/bin/directed-graph-build-systems-are-cool.jar"

@@ -27,7 +27,7 @@ CLASSPATH=$(
   {
     echo "$root/target/$module/classes"
     echo "$root/target/$module/test-classes"
-    for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/javadeps" 2>/dev/null; done
+    for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/jvmdeps" 2>/dev/null; done
   } | sort -u | paste -sd ":" -
 )
 

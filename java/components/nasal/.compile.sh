@@ -12,7 +12,7 @@ cd $module_source_dir
 mkdir -p $root/target/$module/classes
 
 deps=(
-  "module:go/components/nasal"
+  "module:go/components/libnasal"
 )
 
 # Visit compile-time deps amd invoke heir .compile.sh scripts
@@ -21,5 +21,6 @@ for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStep
 CLASSPATH=(
   "$root/target/$module/classes"
 )
+
 
 source $root/shared-build-scripts/compile-java-prod-code-If-needed.sh

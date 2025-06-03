@@ -31,8 +31,9 @@ previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   echo "$relative_script_path: compiling prod code"
   find . -name "*.kt" -print0 | xargs -0 kotlinc -d "$root/target/$module/classes" -cp "$classpath_str"
-  echo "$CLASSPATH" | sed 's/:/\n/g' > $root/target/$module/javadeps
+  echo "$CLASSPATH" | sed 's/:/\n/g' > $root/target/$module/jvmdeps
   echo "$source_timestamp" > "$timestamp_file"
+  touch $root/target/$module/ldlibdeps
 else
   echo "$relative_script_path: skipping compilation of prod code (not changed)"
 fi

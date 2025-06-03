@@ -26,13 +26,6 @@ for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStep
 
 mkdir -p "$root/target/$module/classes/$module"
 
-#for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/javadeps"; done
-
-echo "11"
-
-#for dep in "${deps[@]}"; do cat "$root/target/${dep#module:kotlin/}/javadeps"; done
-
-echo "12"
 # Collect and build CLASSPATH incorporating dependencies own compile classpaths which may include transitive
 CLASSPATH=$(
   {
@@ -40,7 +33,7 @@ CLASSPATH=$(
     for dep in "${deps[@]}"; do
       depmod="${dep#module:java/}"
       [ "$depmod" != "$dep" ] || depmod="${dep#module:kotlin/}"
-      cat "$root/target/$depmod/javadeps" 2>/dev/null
+      cat "$root/target/$depmod/jvmdeps" 2>/dev/null
     done
   } | sort -u | paste -sd ":" -
 )

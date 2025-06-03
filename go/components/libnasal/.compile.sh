@@ -27,6 +27,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
   go build -buildmode=c-shared -o "$GO_OUTPUT_PATH" $(find . -maxdepth 1 -name "*.go" -not -name "*_test.go")
   echo "$source_timestamp" > "$timestamp_file"
+  echo -n "$GO_OUTPUT_PATH" > $root/target/$module/ldlibdeps
 else
     echo "$relative_script_path: skipping compilation of Go prod & test code (not changed)"
 fi

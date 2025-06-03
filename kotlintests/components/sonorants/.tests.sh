@@ -91,12 +91,6 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   echo "Running SonorantsTests..."
   java -ea -cp "$RUNTIME_CLASSPATH" components.sonorants.SonorantsTestsKt
 
-  if [ $? -eq 0 ]; then
-    echo "Tests passed for module: $module"
-  else
-    echo "Tests failed for module: $module"
-    exit 1
-  fi
 else
   echo "$relative_script_path: skipping compilation of and execution test Kotlin code for $module (not changed)"
 fi

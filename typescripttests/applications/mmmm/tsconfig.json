@@ -1,0 +1,16 @@
+{
+  "extends": "../../../target/tests/applications/mmmm/base-tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../target/tests/applications/mmmm",
+    "rootDir": "./",
+    "module": "commonjs",
+    "target": "es2016",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "declaration": true
+  },
+  "include": ["*.ts"]
+}

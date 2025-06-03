@@ -17,18 +17,20 @@ in the depth-first_recursive_modular_monorepo branch
 
 ## Prerequisites
 
-Install these and set paths etc for your OS.
+Install these and set paths etc for your OS. Only of you want to build EVERYTHING. Otherwise just pick the pertinent ones:
 
 * JDK 11 or above. [Linux instructions](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html)
 * Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html) but also do `sudo apt install build-essential` first
 * Kotlin which if you're on Debian you'll want to install [via SDKMan](https://sdkman.io/sdks/kotlin) as the 'apt' installed one is too old
+* Go (see below)
+* Typescript needs Node v22 or above, and the npm-installed tsc (globally).
 * Bash
 
 Also, "Go" via this oneliner as sdk-man doesn't have it:
 
 ``` 
 sudo rm -rf /usr/local/go && \
-curl -o go.tar.gz https://go.dev/dl/go1.24.3.linux-amd64.tar.gz && \
+curl -o go.tar.gz https://dl.google.com/go/go1.24.3.linux-amd64.tar.gz && \
 sudo tar -C /usr/local -xzf go.tar.gz && \
 rm go.tar.gz && \
 echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.profile && \
@@ -54,15 +56,6 @@ Running that app for contrived output to stdout:
 $ java -Djava.library.path=. -jar ./target/applications/monorepos_rule/bin/monorepos-rule.jar
 ```
 
-Output looks like
-
-```
-libvowelbase.so extracted successfully.
-MonoreposRule instance created:
-M(O)N(O)R(E)P(O)SR(U)L(E)
-MonoreposRule{m=class components.nasal.M, o=class components.vowels.O, n=class components.nasal.N, o2=class components.vowels.O, r=class components.sonorants.R, e=class components.vowels.E, p=class components.voiceless.P, o3=class components.vowels.O, s=class components.fricatives.S, r2=class components.sonorants.R, u=class components.vowels.U, l=class components.sonorants.L, e2=class components.vowels.E}
-```
-
 All tests for the other app and all deps, them making the fat jar, then executing it 
 
 ```
@@ -75,6 +68,21 @@ DirectedGraphBuildSystemsAreCool instance created:
 D(I)R(E)CT(E)DGR(A)PHB(U)(I)LDSYST(E)MS(A)R(E)C(O)(O)L
 DirectedGraphBuildSystemsAreCool{d=class components.voiced.D, i=class components.vowels.I, ...
 ```
+
+**TypeScript App Example:**
+
+All tests for the TypeScript app and all deps, then executing them:
+
+```bash
+$ ./typescripttests/applications/mmmm/.tests.sh
+```
+
+All tests for the single TypeScript component, then executing them:
+
+```bash
+$ ./typescripttests/applications/mmmm/.tests.sh
+```
+
 
 You can target any `.dist.sh` script anywhere, or `.tests.sh` or `.compile.sh` where you see them.
 

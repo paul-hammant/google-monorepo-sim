@@ -31,12 +31,7 @@ CLASSPATH=$(
   } | sort -u | paste -sd ":" -
 )
 
-LD_LIB_PATH=()
-
-while IFS= read -r line; do
-  dir=$(dirname "$line")
-  [ -n "$line" ] && LD_LIB_PATH+=("$dir")
-done < "$root/target/$module/ldlibdeps"
+source $root/shared-build-scripts/build-ld-lib-path.sh
 
 # Define additional binary dependencies (external libraries like junit, hamcrest)
 bindeps=(

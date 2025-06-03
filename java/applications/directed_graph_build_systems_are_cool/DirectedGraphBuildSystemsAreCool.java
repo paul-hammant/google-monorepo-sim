@@ -1,5 +1,6 @@
 package applications.directed_graph_build_systems_are_cool;
 
+import components.nasal.GoNasalLibraryUnZipper;
 import components.consonants.C;
 import components.fricatives.S;
 import components.glides.H;
@@ -95,6 +96,10 @@ public class DirectedGraphBuildSystemsAreCool {
 
         VowelBaseLibraryUnZipper.unzip();
         VowelBase.loadLibrary();
+
+        GoNasalLibraryUnZipper.unzip();
+        GoNasalLibraryUnZipper.loadLibrary();
+
 
         System.out.println("main() .. DirectedGraphBuildSystemsAreCool instance created:");
         System.out.flush();

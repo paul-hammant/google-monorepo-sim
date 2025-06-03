@@ -16,15 +16,11 @@ mkdir -p $root/target/$module/classes/META-INF
 printf "Manifest-Version: 1.0\nMain-Class: applications.monorepos_rule.MonoreposRule\n" > $root/target/$module/classes/META-INF/MANIFEST.MF
 mkdir -p $root/target/$module/bin
 echo "Making $module distribution jar"
+
 jar cfM $root/target/$module/bin/monorepos-rule.jar \
     -C $root/target/$module/classes . \
-    -C $root/target/components/fricatives/classes . \
-    -C $root/target/components/nasal/classes . \
-    -C $root/target/components/sonorants/classes . \
-    -C $root/target/components/voiceless/classes . \
-    -C $root/target/components/vowelbase/classes . \
+    $(while IFS= read -r line; do echo "-C $line ."; done < "$root/target/$module/javadeps") \
     -C $root/target/components/vowelbase/lib/release libvowelbase.so \
-    -C $root/target/components/nasal/lib/ libgonasal.so \
-    -C $root/target/components/vowels/classes .
+    -C $root/target/components/nasal/lib/ libgonasal.so
 
 echo "To run this application, do:  java -Djava.library.path=. -jar ./target/applications/monorepos_rule/bin/monorepos-rule.jar"

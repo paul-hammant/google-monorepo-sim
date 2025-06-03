@@ -31,10 +31,12 @@ CLASSPATH=$(
   } | sort -u | paste -sd ":" -
 )
 
-LD_LIB_PATH=(
-  "$root/target/components/vowelbase/lib/release"
-  "$root/target/components/nasal/lib"
-)
+LD_LIB_PATH=()
+
+while IFS= read -r line; do
+  dir=$(dirname "$line")
+  [ -n "$line" ] && LD_LIB_PATH+=("$dir")
+done < "$root/target/$module/ldlibdeps"
 
 # Define additional binary dependencies (external libraries like junit, hamcrest)
 bindeps=(

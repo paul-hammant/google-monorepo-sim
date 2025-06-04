@@ -35,15 +35,23 @@ TSCONFIG_CONTENT='{
 # Process NPM dependencies and add them to paths
 for npm_dep in $npm_deps_string; do
   # Parse package_name@package_version
-  if [[ ! "$npm_dep" =~ ^([^@]+)@([^@]+)$ ]]; then
-    echo "Warning: Could not parse npm dependency string '$npm_dep' in generate-typescript-base-tsconfig-json.sh. Skipping." >&2
+  if [[ "$npm_dep" =~ ^(@[^/]+/[^@]+)@([^@]+)$ ]]; then # Scoped package
+    npm_package_name="${BASH_REMATCH[1]}"
+    npm_package_version="${BASH_REMATCH[2]}"
+  elif [[ "$npm_dep" =~ ^([^@]+)@([^@]+)$ ]]; then # Non-scoped package
+    npm_package_name="${BASH_REMATCH[1]}"
+    npm_package_version="${BASH_REMATCH[2]}"
+  else
+    echo "Warning: Could not parse npm dependency string '$npm_dep' in generate-typescript-base-tsconfig-json.sh. Expected format: [@scope/]package_name@version. Skipping." >&2
     continue
   fi
-  npm_package_name="${BASH_REMATCH[1]}"
-  npm_package_version="${BASH_REMATCH[2]}"
 
   # Construct path to the vendored package
-  vendored_npm_pkg_path="$root/libs/javascript/npm_vendored/$npm_package_name/$npm_package_version/package"
+  if [[ "$npm_package_name" == @types/* ]]; then
+    vendored_npm_pkg_path="$root/libs/javascript/npm_vendored/$npm_package_name/$npm_package_version" # No /package for @types
+  else
+    vendored_npm_pkg_path="$root/libs/javascript/npm_vendored/$npm_package_name/$npm_package_version/package"
+  fi
 
   # Calculate the relative path from the consumer's source directory to the vendored package path
   # realpath --relative-to=from_path to_path

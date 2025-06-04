@@ -1,0 +1,16 @@
+New build:
+Ensuring NPM dependencies...
+NPM vendoring complete.
+typescript/components/explanation/.compile.sh: skipping compilation of prod code (not changed)
+go/components/libnasal/.compile.sh: skipping compilation of Go prod & test code (not changed)
+typescript/applications/mmmm/.compile.sh: compiling prod code
+typescript/applications/mmmm/.tests.sh: compiling test code and executing tests
+DEBUG: After make-target-tsdeps-file.sh. Checking if tsdeps file exists:
+-rw-r--r-- 1 jules root 77 Jun  4 15:25 /app/target/tests/typescript/applications/mmmm/tsdeps
+DEBUG: Calling generate-typescript-base-tsconfig-json.sh with args:
+DEBUG: Arg1 (root): /app
+DEBUG: Arg2 (consumer_module_source_dir): /app/typescript/applications/mmmm
+DEBUG: Arg3 (consumer_target_dir): /app/target/tests/typescript/applications/mmmm
+DEBUG: Arg4 (deps_source_paths_string): module:typescript/applications/mmmm
+module:typescript/components/explanation
+DEBUG: Arg5 (npm_deps_string): assert@1.5.1 @types/node@20.12.7

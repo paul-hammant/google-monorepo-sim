@@ -19,10 +19,16 @@ Info: Correct version (20.12.7) of @types/node already vendored at /app/libs/jav
 Info [ensure-npm]: Successfully processed @types/node@20.12.7. Content at: /app/libs/javascript/npm_vendored/@types/node/node
 Info [ensure-npm]: All specified NPM dependencies processed.
 Debug [generate-tsconfig]: Processing NPM dep mappings:
-Debug [generate-tsconfig]: Processing NPM dep mappings: assert:/app/libs/javascript/npm_vendored/assert/package @types/node:/app/libs/javascript/npm_vendored/@types/node/node
-Debug [generate-tsconfig]: Parsed mapping. Package Name: 'assert', Actual Path: '/app/libs/javascript/npm_vendored/assert/package'
-Debug [generate-tsconfig]: Relative path for 'assert' is '../../../libs/javascript/npm_vendored/assert/package'
-Debug [generate-tsconfig]: Added path mappings for 'assert' and 'assert/*' to tsconfig.
-Debug [generate-tsconfig]: Parsed mapping. Package Name: '@types/node', Actual Path: '/app/libs/javascript/npm_vendored/@types/node/node'
-Debug [generate-tsconfig]: Relative path for '@types/node' is '../../../libs/javascript/npm_vendored/@types/node/node'
-Debug [generate-tsconfig]: Added path mappings for '@types/node' and '@types/node/*' to tsconfig.
+Debug [generate-tsconfig]: About to call realpath for module dep. consumer_module_source_dir='/app/typescript/applications/mmmm', target_dep_path='/app/target/applications/mmmm'
+Debug [generate-tsconfig]: realpath for module dep successful: '../../../target/applications/mmmm'
+Debug [generate-tsconfig]: About to call realpath for module dep. consumer_module_source_dir='/app/typescript/applications/mmmm', target_dep_path='/app/target/components/explanation'
+Debug [generate-tsconfig]: realpath for module dep successful: '../../../target/components/explanation'
+--- [DEBUG] [.tests.sh] Content of generated base-tsconfig.json (to stderr) ---
+cat: '$root/target/tests/$module/base-tsconfig.json': No such file or directory
+[DEBUG] [.tests.sh] cat base-tsconfig.json failed
+
+--- [DEBUG] [.tests.sh] Validating base-tsconfig.json with jq (to stderr) ---
+jq: error: Could not open file $root/target/tests/$module/base-tsconfig.json: No such file or directory
+[DEBUG] [.tests.sh] jq validation failed (or file not found by jq)
+
+typescript/applications/mmmm/.tests.sh: line 77: $root/target/test_error.log: No such file or directory

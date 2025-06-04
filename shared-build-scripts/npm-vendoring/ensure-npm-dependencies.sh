@@ -1,58 +1,86 @@
 #!/bin/bash
-set -eo pipefail
+# ensure-npm-dependencies.sh
+set -eo pipefail # Exit on error, and on pipe failures
 
 if [ "$#" -lt 2 ]; then
-    echo "Usage: $0 <root_dir> <npm_dep_1> [<npm_dep_2> ...]"
-    echo "Example: $0 /path/to/root "assert@1.5.1" "anotherpackage@1.0.0""
+    echo "Usage: $0 <root_dir> <npm_dep_1> [<npm_dep_2> ...]" >&2
+    echo "Example: $0 /path/to/root "assert@1.5.1" "@types/node@20.12.7"" >&2
     exit 1
 fi
 
 root_dir="$1"
 shift # Remove root_dir from arguments, remaining are dependencies
 
-# Get the directory where vendor-npm-package.sh is located
-# This makes the script callable from anywhere as long as vendor-npm-package.sh is in the same dir
 script_dir="$(dirname "$(realpath "${BASH_SOURCE[0]}")")"
 vendor_script="$script_dir/vendor-npm-package.sh"
 
-if [ ! -f "$vendor_script" ]; then
-    echo "Error: Core vendoring script not found at $vendor_script"
+if [ ! -x "$vendor_script" ]; then # Ensure core script is executable
+    echo "Critical Error: Core vendoring script not found or not executable at $vendor_script" >&2
     exit 1
 fi
 
-vendored_package_paths=()
+final_vendored_paths=() # Array to store successfully determined paths
+
+echo "Debug [ensure-npm]: Processing ${#} dependencies..." >&2
 
 for dep_string in "$@"; do
-    # Parse package_name@package_version
-    # This simple parsing works for "name@version".
-    # It might need to be more robust for versions with '-', or scoped packages like '@scope/name@version'.
-    # For "assert@1.5.1", package_name=assert, package_version=1.5.1
-    if [[ ! "$dep_string" =~ ^([^@]+)@([^@]+)$ ]]; then
-        echo "Warning: Could not parse dependency string '$dep_string'. Expected format: package_name@version. Skipping."
+    echo "Debug [ensure-npm]: Parsing dependency string: '$dep_string'" >&2
+    # Regex handles optional @scope/ and captures name and version
+    if [[ ! "$dep_string" =~ ^((@([^/]+)/)?([^@]+))@([^@]+)$ ]]; then
+        echo "Warning [ensure-npm]: Could not parse dependency string '$dep_string'. Expected format: [@scope/]package_name@version. Skipping." >&2
         continue
     fi
-    package_name="${BASH_REMATCH[1]}"
-    package_version="${BASH_REMATCH[2]}"
+    package_name="${BASH_REMATCH[1]}"    # Full name e.g., @types/node or assert
+    package_version="${BASH_REMATCH[5]}" # Version part
 
-    echo "Processing dependency: $package_name@$package_version"
+    echo "Info [ensure-npm]: Processing dependency $package_name@$package_version..." >&2
 
-    # Call the vendor-npm-package.sh script and capture its output (the path)
-    # If vendor_script fails, pipefail will ensure this script also fails.
-    output_path=$("$vendor_script" "$root_dir" "$package_name" "$package_version")
+    temp_stdout=$(mktemp)
+    if [ $? -ne 0 ] || [ -z "$temp_stdout" ]; then echo "Critical Error [ensure-npm]: mktemp for stdout failed." >&2; exit 1; fi
+    temp_stderr=$(mktemp)
+    if [ $? -ne 0 ] || [ -z "$temp_stderr" ]; then echo "Critical Error [ensure-npm]: mktemp for stderr failed." >&2; rm -f "$temp_stdout"; exit 1; fi
 
-    if [ -n "$output_path" ]; then
-        # The vendor_script outputs multiple lines, the last one is the path.
-        # Let's make sure we only take the last line.
-        actual_path=$(echo "$output_path" | tail -n 1)
-        echo "Successfully processed $package_name@$package_version, vendored at: $actual_path"
-        vendored_package_paths+=("$actual_path")
-    else
-        echo "Warning: No output path received from vendoring $package_name@$package_version. Check logs from vendor-npm-package.sh."
+    vendor_script_exit_code=0
+    # Call vendor_script, redirecting its stdout and stderr to temp files
+    if ! "$vendor_script" "$root_dir" "$package_name" "$package_version" > "$temp_stdout" 2> "$temp_stderr"; then
+        vendor_script_exit_code=$? # Capture the exit code
+        echo "Error [ensure-npm]: Vendoring script FAILED for $package_name@$package_version (Exit Code: $vendor_script_exit_code)." >&2
     fi
+
+    # Always print stderr from vendor_script for debugging visibility
+    if [ -s "$temp_stderr" ]; then # Check if stderr temp file is not empty
+        echo "--- Vendoring Script STDERR for $package_name@$package_version ---" >&2
+        cat "$temp_stderr" >&2
+        echo "--- End Vendoring Script STDERR ---" >&2
+    else
+        echo "Debug [ensure-npm]: Vendoring script for $package_name@$package_version produced no STDERR." >&2
+    fi
+
+    if [ $vendor_script_exit_code -ne 0 ]; then
+        # If vendor_script exited with an error, ensure-npm-dependencies also exits with error
+        rm -f "$temp_stdout" "$temp_stderr"
+        exit 1 # Propagate failure
+    fi
+
+    # If vendor_script succeeded (exit code 0)
+    actual_path=$(cat "$temp_stdout")
+    if [ -z "$actual_path" ]; then
+        echo "Error [ensure-npm]: Vendoring script for $package_name@$package_version succeeded but produced no path (empty stdout)." >&2
+        # This case should ideally be caught by vendor_script itself if it can't determine a path.
+        rm -f "$temp_stdout" "$temp_stderr"
+        exit 1
+    fi
+
+    echo "Info [ensure-npm]: Successfully processed $package_name@$package_version. Content at: $actual_path" >&2
+    final_vendored_paths+=("$actual_path")
+
+    rm -f "$temp_stdout" "$temp_stderr"
 done
 
-# Print all collected vendored package paths, one per line
-# This output will be captured by the calling .tests.sh script
-for path in "${vendored_package_paths[@]}"; do
-    echo "$path"
-done
+# Output all successfully determined paths, one per line, to STDOUT
+# This is captured by the calling .tests.sh script
+if [ ${#final_vendored_paths[@]} -gt 0 ]; then
+    printf "%s\n" "${final_vendored_paths[@]}"
+fi
+
+echo "Info [ensure-npm]: All specified NPM dependencies processed." >&2

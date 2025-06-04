@@ -8,3 +8,4 @@ __pycache__/
 *.iml
 /.buildStepsDoneLastExecution
 .aider*
+libs/javascript/npm_vendored/

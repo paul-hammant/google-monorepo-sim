@@ -13,7 +13,7 @@ Specifically, the Java, and Rust sources are identical in both, but in different
 The build files are different. There's newer Kotlin modules in trunk, that are not duplicated 
 in the depth-first_recursive_modular_monorepo branch 
 
-## Directed Acyclic Graph Modular Monorepo
+# Directed Acyclic Graph Modular Monorepo
 
 ## Prerequisites
 
@@ -91,6 +91,25 @@ You can do that from the root folder. You can also do it by cd-ing deeper into t
 Any target can invoke any of its dependencies build files anywhere else in the relative dir structure.
 
 If you run anything a second time, compile and test invocation are skipped, and there will be a note in the build log to that effect.
+
+
+## Vendoring in Third-Party Dependencies
+
+This sim aims to simulate many aspects of a google-style monorepo, including how third-party dependencies 
+might be "vendored in" rather than relying on external package managers during builds.      
+Vendoring means copying the dependency's source code or binaries directly into the repository. 
+This provides benefits like reproducible builds, faster dependency resolution, and        
+immunity to external repository outages, but also adds overhead in managing updates.
+
+Here's the current status of vendoring for different language ecosystems within this repo:
+
+| Language   | Current Status                                                       |
+|------------|----------------------------------------------------------------------|
+| Java       | complete – see `libs/java/`                                          |
+| Rust       | Not started – Cargo build system is used and it has its own idioms   |
+| Go         | Not started – `go build` is used and it has its own idioms           |
+| TypeScript | No deps presently and no idea how to elegantly do it                 |
+
 
 # Sparse-checkout feature (that Google do)
 

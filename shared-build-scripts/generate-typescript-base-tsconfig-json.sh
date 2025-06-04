@@ -9,23 +9,19 @@ set -eo pipefail
 # $2: consumer_module_source_dir (e.g., /path/to/monorepo/typescript/applications/mmmm)
 # $3: consumer_target_dir (e.g., /path/to/monorepo/target/applications/mmmm)
 # $4: space-separated list of *source-relative paths* of TypeScript dependencies (e.g., "module:typescript/components/explanation")
+# $5: Optional: space-separated list of NPM dependencies (e.g., "assert@1.5.1 otherpkg@1.0.0")
 
 root="$1"
 consumer_module_source_dir="$2"
 consumer_target_dir="$3"
 deps_source_paths_string="$4" # These are paths like "module:typescript/components/explanation"
+npm_deps_string="$5"         # These are like "assert@1.5.1 anotherpackage@1.2.3"
 
 #echo "DEBUG: root: $root"
 #echo "DEBUG: consumer_module_source_dir: $consumer_module_source_dir"
 #echo "DEBUG: consumer_target_dir: $consumer_target_dir"
 #echo "DEBUG: deps_source_paths_string: $deps_source_paths_string"
-
-# Initialize paths with the ffi-napi mapping.
-# This path is relative from the consumer's source tsconfig.json's baseUrl (which is '.')
-# to the vendored location.
-INITIAL_PATHS='{
-  "ffi-napi/*": ["../../../libs/javascript/node_modules/ffi-napi/*"]
-}'
+#echo "DEBUG: npm_deps_string: $npm_deps_string"
 
 # Start with the base tsconfig structure for the generated base-tsconfig.json.
 # This file will be extended by the consumer's actual tsconfig.json.
@@ -36,8 +32,33 @@ TSCONFIG_CONTENT='{
   }
 }'
 
-# Merge initial paths (e.g., ffi-napi)
-TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --argjson initial_paths "$INITIAL_PATHS" '.compilerOptions.paths += $initial_paths')
+# Process NPM dependencies and add them to paths
+for npm_dep in $npm_deps_string; do
+  # Parse package_name@package_version
+  if [[ ! "$npm_dep" =~ ^([^@]+)@([^@]+)$ ]]; then
+    echo "Warning: Could not parse npm dependency string '$npm_dep' in generate-typescript-base-tsconfig-json.sh. Skipping." >&2
+    continue
+  fi
+  npm_package_name="${BASH_REMATCH[1]}"
+  npm_package_version="${BASH_REMATCH[2]}"
+
+  # Construct path to the vendored package
+  vendored_npm_pkg_path="$root/libs/javascript/npm_vendored/$npm_package_name/$npm_package_version/package"
+
+  # Calculate the relative path from the consumer's source directory to the vendored package path
+  # realpath --relative-to=from_path to_path
+  relative_npm_pkg_path=$(realpath --relative-to="$consumer_module_source_dir" "$vendored_npm_pkg_path")
+
+  # Add path mapping for the package name (e.g., "assert")
+  key_exact="$npm_package_name"
+  value_exact="[\"$relative_npm_pkg_path\"]"
+  TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --arg key "$key_exact" --argjson value "$value_exact" '.compilerOptions.paths[$key] = $value')
+
+  # Add path mapping for subpaths (e.g., "assert/*")
+  key_wildcard="$npm_package_name/*"
+  value_wildcard="[\"$relative_npm_pkg_path/*\"]"
+  TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --arg key "$key_wildcard" --argjson value "$value_wildcard" '.compilerOptions.paths[$key] = $value')
+done
 
 # Iterate over TypeScript dependency *source-relative paths* to collect their path mappings
 for dep_source_path_full in $deps_source_paths_string; do

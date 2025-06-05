@@ -17,7 +17,7 @@ npm_deps=(
 )
 
 # Visit compile-time deps and invoke their .compile.sh scripts
-for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
 # Create directory for compiled test classes (JS output)
 mkdir -p $root/target/tests/$module/

@@ -8,6 +8,12 @@ relative_script_path="${script_source#$root/}"
 source $root/shared-build-scripts/init.sh
 cd $module_source_dir
 
+deps=(
+)
+
+# Visit compile-time deps and invoke their .compile.sh scripts
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
+
 # Create directory for compiled classes
 mkdir -p $root/target/$module/classes
 

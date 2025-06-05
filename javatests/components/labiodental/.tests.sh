@@ -12,8 +12,8 @@ deps=(
   "module:java/components/labiodental"
 )
 
-# Visit compile-time deps amd invoke heir .compile.sh scripts
-for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
+# Visit compile-time deps and invoke their .compile.sh scripts
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
 # Create directory for compiled classes
 mkdir -p $root/target/$module/classes

@@ -10,7 +10,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "declaration": true,
+    "declaration": true
   },
   "include": ["*.ts"]
 }

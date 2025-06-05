@@ -10,6 +10,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
+    "declaration": true
   },
   "include": ["*.ts", "../../types/global.d.ts"]
 }

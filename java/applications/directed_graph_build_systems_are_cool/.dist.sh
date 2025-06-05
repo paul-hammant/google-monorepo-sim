@@ -9,8 +9,9 @@ relative_script_path="${script_source#$root/}"
 source $root/shared-build-scripts/init.sh
 cd $module_source_dir
 
+# Sibling dep
+./.compile.sh "$root/.buildStepsDoneLastExecution"
 
-$root/java/$module/.compile.sh "$root/.buildStepsDoneLastExecution"
 # Create directory for compiled classes
 mkdir -p $root/target/$module/classes/META-INF
 printf "Manifest-Version: 1.0\nMain-Class: applications.directed_graph_build_systems_are_cool.DirectedGraphBuildSystemsAreCool\n" > $root/target/$module/classes/META-INF/MANIFEST.MF

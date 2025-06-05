@@ -15,6 +15,15 @@ mkdir -p $root/target/$module/classes/$module # For timestamp file
 # Define KOTLIN_HOME if not set, common location for Kotlin compiler
 : "${KOTLIN_HOME:=/usr/share/kotlin}"
 
+deps=(
+)
+
+# Visit compile-time deps and invoke their .compile.sh scripts
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
+
+# Create directory for compiled classes
+mkdir -p $root/target/$module/classes
+
 CLASSPATH=(
   "$root/target/$module/classes"
   "$KOTLIN_HOME/lib/kotlin-stdlib.jar" # Added Kotlin stdlib

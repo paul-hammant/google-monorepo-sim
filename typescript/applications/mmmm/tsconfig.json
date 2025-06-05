@@ -11,5 +11,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "."
   },
-  "include": ["*.ts", "../../types/global.d.ts"]
+  "include": [
+    "MmmmU0021.ts",
+    "../../types/global.d.ts"
+  ]
 }

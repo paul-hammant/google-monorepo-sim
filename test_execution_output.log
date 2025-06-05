@@ -1,0 +1,9 @@
+New build:
+Ensuring NPM dependencies...
+NPM vendoring complete.
+typescript/components/explanation/.compile.sh: skipping compilation of prod code (not changed)
+go/components/libnasal/.compile.sh: skipping compilation of Go prod & test code (not changed)
+typescript/applications/mmmm/.compile.sh: compiling prod code
+typescript/applications/mmmm/.tests.sh: compiling test code and executing tests
+DEBUG: After make-target-tsdeps-file.sh. Checking if tsdeps file exists:
+-rw-r--r-- 1 jules root 77 Jun  4 16:28 /app/target/tests/typescript/applications/mmmm/tsdeps

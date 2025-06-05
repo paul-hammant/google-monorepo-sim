@@ -11,7 +11,11 @@ deps=("$@")
 deps_incl_transitive=()
 
 # Add the current module itself to the dependencies list
-deps_incl_transitive+=("module:typescript/$module")
+if [[ "$module" == typescript/* ]]; then
+  deps_incl_transitive+=("module:$module") # If $module is already 'typescript/foo', use 'module:typescript/foo'
+else
+  deps_incl_transitive+=("module:typescript/$module") # Otherwise, prepend 'typescript/'
+fi
 
 for dep in "${deps[@]}"; do
   if [[ $dep == module:typescript/* ]]; then

@@ -1,0 +1,34 @@
+Debug [ensure-npm]: Processing 2 dependencies...
+Debug [ensure-npm]: Parsing dependency string: 'assert@1.5.1'
+Info [ensure-npm]: Processing dependency assert@1.5.1...
+--- Vendoring Script STDERR for assert@1.5.1 ---
+Debug: Processing assert@1.5.1
+Debug: Package directory /app/libs/javascript/npm_vendored/assert already exists. Checking version...
+Debug: Found vendored version 1.5.1, requested 1.5.1.
+Info: Correct version (1.5.1) of assert already vendored at /app/libs/javascript/npm_vendored/assert/package.
+--- End Vendoring Script STDERR ---
+Info [ensure-npm]: Successfully processed assert@1.5.1. Content at: /app/libs/javascript/npm_vendored/assert/package
+Debug [ensure-npm]: Parsing dependency string: '@types/node@20.12.7'
+Info [ensure-npm]: Processing dependency @types/node@20.12.7...
+--- Vendoring Script STDERR for @types/node@20.12.7 ---
+Debug: Processing @types/node@20.12.7
+Debug: Package directory /app/libs/javascript/npm_vendored/@types/node already exists. Checking version...
+Debug: Found vendored version 20.12.7, requested 20.12.7.
+Info: Correct version (20.12.7) of @types/node already vendored at /app/libs/javascript/npm_vendored/@types/node/node.
+--- End Vendoring Script STDERR ---
+Info [ensure-npm]: Successfully processed @types/node@20.12.7. Content at: /app/libs/javascript/npm_vendored/@types/node/node
+Info [ensure-npm]: All specified NPM dependencies processed.
+Debug [generate-tsconfig]: Processing NPM dep mappings:
+Debug [generate-tsconfig]: About to call realpath for module dep. consumer_module_source_dir='/app/typescript/applications/mmmm', target_dep_path='/app/target/applications/mmmm'
+Debug [generate-tsconfig]: realpath for module dep successful: '../../../target/applications/mmmm'
+Debug [generate-tsconfig]: About to call realpath for module dep. consumer_module_source_dir='/app/typescript/applications/mmmm', target_dep_path='/app/target/components/explanation'
+Debug [generate-tsconfig]: realpath for module dep successful: '../../../target/components/explanation'
+--- [DEBUG] [.tests.sh] Content of generated base-tsconfig.json (to stderr) ---
+cat: '$root/target/tests/$module/base-tsconfig.json': No such file or directory
+[DEBUG] [.tests.sh] cat base-tsconfig.json failed
+
+--- [DEBUG] [.tests.sh] Validating base-tsconfig.json with jq (to stderr) ---
+jq: error: Could not open file $root/target/tests/$module/base-tsconfig.json: No such file or directory
+[DEBUG] [.tests.sh] jq validation failed (or file not found by jq)
+
+typescript/applications/mmmm/.tests.sh: line 77: $root/target/test_error.log: No such file or directory

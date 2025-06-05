@@ -1,0 +1,14 @@
+{
+  "extends": "../../../target/tests/applications/mmmm/base-tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+    // Add other test-specific compiler options if needed in the future,
+    // e.g., "rootDir" if different, "outDir" if specific for tests (though usually inherited or same structure)
+  },
+  "include": [
+    "MmmmU0021Tests.ts"
+  ],
+  "exclude": [
+    // Any files to specifically exclude from test compilation
+  ]
+}

@@ -1,0 +1,2 @@
+assert:node_modules/assert/build/assert.js
+ffi-napi:node_modules/ffi-napi-v22/lib/ffi.js

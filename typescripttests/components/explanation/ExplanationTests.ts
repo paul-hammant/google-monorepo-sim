@@ -1,11 +1,6 @@
 // Custom assert implementation for strictEqual for now - TODO use NPM version later
-const assert = {
-    strictEqual: (actual: any, expected: any, message?: string) => {
-        if (actual !== expected) {
-            throw new Error(message || `Assertion failed: Expected ${JSON.stringify(expected)}, but got ${JSON.stringify(actual)}`);
-        }
-    }
-};
+
+import { assert } from 'assert';
 
 // Mock console.log to capture output
 let capturedOutput = '';

@@ -12,6 +12,17 @@ deps=(
   "module:typescript/applications/mmmm"
 )
 
+# Extract actual paths for npm dependencies from package-map
+npm_deps_paths=()
+while IFS= read -r line; do
+  IFS=':' read -r key path <<< "$line"
+  for npm_dep in "${npm_deps[@]}"; do
+    if [[ "$npm_dep" == "libs:javascript:$key" ]]; then
+      npm_deps_paths+=("$root/libs/javascript/npm_vendored/$path")
+    fi
+  done
+done < "$root/libs/javascript/npm_vendored/package-map"
+
 # Visit compile-time deps and invoke their .compile.sh scripts
 for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
 

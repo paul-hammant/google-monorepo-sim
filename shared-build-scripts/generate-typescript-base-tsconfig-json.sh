@@ -24,17 +24,18 @@ deps_source_paths_string="$4" # These are paths like "module:typescript/componen
 # This path is relative from the consumer's source tsconfig.json's baseUrl (which is '.')
 # to the vendored location.
 INITIAL_PATHS='{
-  "ffi-napi/*": ["../../../libs/javascript/node_modules/ffi-napi/*"]
 }'
 
 # Start with the base tsconfig structure for the generated base-tsconfig.json.
 # This file will be extended by the consumer's actual tsconfig.json.
 # It only needs compilerOptions.paths.
-TSCONFIG_CONTENT='{
-  "compilerOptions": {
-    "paths": {}
-  }
-}'
+TSCONFIG_CONTENT="{
+  \"compilerOptions\": {
+    \"paths\": {},
+    \"typeRoots\": [\"typings\", \"$root/libs/javascript/npm_vendored/node_modules/@types\"]
+  },
+  \"include\": [\"src/**/*.ts\", \"typings/**/*.d.ts\"]
+}"
 
 # Merge initial paths (e.g., ffi-napi)
 TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --argjson initial_paths "$INITIAL_PATHS" '.compilerOptions.paths += $initial_paths')

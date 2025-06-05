@@ -12,6 +12,10 @@ deps=(
   "module:typescript/components/explanation"
 )
 
+npm_deps=(
+  "libs:javascript/assert"
+)
+
 # Visit compile-time deps and invoke their .compile.sh scripts
 for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
 
@@ -30,6 +34,8 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
     "$root" "$module_source_dir" "$root/target/tests/$module" "$(cat "$root/target/tests/$module/tsdeps")"
+
+  "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "tests/$module" "${npm_deps[@]}"
 
   # Compile TypeScript test files
   tsc

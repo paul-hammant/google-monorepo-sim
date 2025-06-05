@@ -10,7 +10,11 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
-    "declaration": true
+    "declaration": true,
+    "paths": {
+      "assert": ["../../../../libs/javascript/npm_vendored/node_modules/assert/build/assert.js"],
+      "ffi-napi": ["../../../../libs/javascript/npm_vendored/node_modules/ffi-napi-v22/lib/ffi.js"]
+    }
   },
   "include": ["*.ts"]
 }

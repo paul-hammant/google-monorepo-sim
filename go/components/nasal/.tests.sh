@@ -21,7 +21,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
     # Run Go tests
     echo "$relative_script_path: running Go tests..."
 
-    LD_LIBRARY_PATH="$root/target/components/libnasal/lib:$LD_LIBRARY_PATH" go test -v .
+    LD_LIBRARY_PATH="$root/target/components/nasal/lib:$LD_LIBRARY_PATH" go test -v .
 
     echo "$relative_script_path: Go tests completed successfully."
     echo "$source_timestamp" > "$timestamp_file"

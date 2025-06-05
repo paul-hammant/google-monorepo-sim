@@ -12,7 +12,7 @@ cd "$module_source_dir" # Ensure we are in the module's source directory for rel
 # Define TypeScript dependencies
 deps=(
   "module:typescript/components/explanation"
-  "module:go/components/libnasal" # This one doesn't generate a tsconfig.json for TS paths
+  "module:go/components/nasal" # This one doesn't generate a tsconfig.json for TS paths
 )
 
 # Visit compile-time deps and invoke their .compile.sh scripts

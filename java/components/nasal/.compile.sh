@@ -12,7 +12,7 @@ cd $module_source_dir
 mkdir -p $root/target/$module/classes
 
 deps=(
-  "module:go/components/libnasal"
+  "module:go/components/nasal"
 )
 
 # Visit compile-time deps amd invoke heir .compile.sh scripts

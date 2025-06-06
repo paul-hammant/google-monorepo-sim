@@ -56,8 +56,7 @@ public class MonoreposRule {
         System.out.flush();
         MonoreposRule monoreposRule = makeMonoreposRule();
         // Instantiation would have printed the letters of the class name to the stdout
-        System.out.println("\nMonoreposRule instance toString():");
-        System.out.println(monoreposRule);
+        System.out.println("\nqKey: (vowels via Rust), <nasal via Go>, {sonorants via Kotlin}, all others pure Java\n");
     }
 
     public static MonoreposRule makeMonoreposRule() {

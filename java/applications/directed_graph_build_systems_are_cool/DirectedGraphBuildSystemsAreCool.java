@@ -105,8 +105,7 @@ public class DirectedGraphBuildSystemsAreCool {
         System.out.flush();
         DirectedGraphBuildSystemsAreCool directedGraphBuildSystemsAreCool = makeDirectedGraphBuildSystemsAreCool();
         // Instantiation would have printed the letters of the class name to the stdout
-        System.out.println("\nDirectedGraphBuildSystemsAreCool instance toString():");
-        System.out.println(directedGraphBuildSystemsAreCool);
+        System.out.println("\nKey: (vowels via Rust), <nasal via Go>, {sonorants via Kotlin}, all others pure Java\n");
     }
 
     public static DirectedGraphBuildSystemsAreCool makeDirectedGraphBuildSystemsAreCool() {

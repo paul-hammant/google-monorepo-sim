@@ -16,7 +16,7 @@ GO_OUTPUT_PATH="$GO_OUTPUT_LIB_DIR/$SHARED_LIB_FILENAME"
 
 # Timestamp-based compilation
 timestamp_file="$GO_OUTPUT_LIB_DIR/.timestamp"
-raw_source_timestamp=$(find . -mindepth 1 -name "*.go" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1 || echo 0)
+raw_source_timestamp=$(find . -mindepth 1 -name "*" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1 || echo 0)
 source_timestamp=${raw_source_timestamp:-0}
 previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 

@@ -23,7 +23,7 @@ source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh
 mkdir -p $root/target/tests/$module/
 
 timestamp_file="$root/target/tests/$module/.timestamp"
-raw_source_timestamp=$(find . -mindepth 1 -name "*.ts" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
+raw_source_timestamp=$(find . -mindepth 1 -name "*" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
 source_timestamp=${raw_source_timestamp:-0}
 previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 

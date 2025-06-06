@@ -12,6 +12,10 @@ deps=(
   "module:typescript/applications/mmmm"
 )
 
+npm_deps=(
+  "libs:javascript/assert"
+)
+
 # Extract actual paths for npm dependencies from package-map
 npm_deps_paths=()
 while IFS= read -r line; do
@@ -31,7 +35,7 @@ mkdir -p $root/target/tests/$module/
 
 # Timestamp-based test compilation and execution
 timestamp_file="$root/target/tests/$module/.timestamp"
-raw_source_timestamp=$(find . -mindepth 1 -name "*.ts" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
+raw_source_timestamp=$(find . -mindepth 1 -name "*" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
 source_timestamp=${raw_source_timestamp:-0}
 previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 

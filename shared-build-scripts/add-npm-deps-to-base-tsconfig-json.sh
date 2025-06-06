@@ -48,5 +48,3 @@ else
   tmp_file=$(mktemp)
   jq --argjson new_paths "$paths_json" '.compilerOptions.paths = $new_paths' "$base_tsconfig_path" > "$tmp_file" && mv "$tmp_file" "$base_tsconfig_path"
 fi
-
-echo "Updated $base_tsconfig_path with new paths configuration."

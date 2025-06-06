@@ -28,7 +28,7 @@ CLASSPATH=$(
   {
     echo "$root/target/${deps[0]#module:kotlin/}/classes" # Compiled main Kotlin code
     # Add jvmdeps from the main module (assuming it lists .class files or JARs)
-    cat "$root/target/${deps[0]#module:kotlin/}/jvmdeps" 2>/dev/null
+    cat "$root/target/${deps[0]#module:kotlin/}/jvmdeps" 2>/dev/null || true
     echo "$KOTLIN_HOME/lib/kotlin-stdlib.jar"
   } | sort -u | paste -sd ":" -
 )
@@ -80,7 +80,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
     {
       echo "$root/target/$module/test-classes"
       echo "$root/target/${deps[0]#module:kotlin/}/classes"
-      cat "$root/target/${deps[0]#module:kotlin/}/jvmdeps" 2>/dev/null
+      cat "$root/target/${deps[0]#module:kotlin/}/jvmdeps" 2>/dev/null || true
       echo "$KOTLIN_HOME/lib/kotlin-stdlib.jar"  # should be in libs:/ ??
       echo "CLASSPATH"
       echo "$LIBS_CLASSPATH"

@@ -18,9 +18,18 @@ printf "Manifest-Version: 1.0\nMain-Class: applications.directed_graph_build_sys
 mkdir -p $root/target/$module/bin
 echo "Making $module distribution (jar)"
 
-jar cfM $root/target/$module/bin/directed-graph-build-systems-are-cool.jar \
-    -C $root/target/$module/classes . \
-    $(while IFS= read -r line; do echo "-C $line ."; done < "$root/target/$module/jvmdeps") \
-    $(while IFS= read -r line; do echo "-C $line ."; done < "$root/target/$module/ldlibdeps")
+jar_args=(-C "$root/target/$module/classes" .)
+
+while IFS= read -r line; do
+  [ -n "$line" ] && jar_args+=(-C "$line" .)
+done < "$root/target/$module/jvmdeps"
+
+while IFS= read -r line; do
+  dir=$(dirname "$line")
+  file=$(basename "$line")
+  [ -n "$line" ] && jar_args+=(-C "$dir" "$file")
+done < "$root/target/$module/ldlibdeps"
+
+jar cfM "$root/target/$module/bin/directed-graph-build-systems-are-cool.jar" "${jar_args[@]}"
 
 echo "To run this application, do:  java -Djava.library.path=. -jar ./target/applications/directed_graph_build_systems_are_cool/bin/directed-graph-build-systems-are-cool.jar"

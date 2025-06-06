@@ -16,7 +16,7 @@ GO_OUTPUT_PATH="$GO_OUTPUT_LIB_DIR/$SHARED_LIB_FILENAME"
 
 # Timestamp-based compilation
 timestamp_file="$GO_OUTPUT_LIB_DIR/.timestamp"
-raw_source_timestamp=$(find . -mindepth 1 -name "*.go" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
+raw_source_timestamp=$(find . -mindepth 1 -name "*.go" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1 || echo 0)
 source_timestamp=${raw_source_timestamp:-0}
 previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 
@@ -25,7 +25,12 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
     # Ensure module is tidy
   go mod tidy
 
-  go build -buildmode=c-shared -o "$GO_OUTPUT_PATH" $(find . -maxdepth 1 -name "*.go" -not -name "*_test.go")
+  GO_SOURCE_FILES=$(find . -maxdepth 1 -name "*.go" -not -name "*_test.go")
+  if [[ -n "$GO_SOURCE_FILES" ]]; then
+    go build -buildmode=c-shared -o "$GO_OUTPUT_PATH" $GO_SOURCE_FILES
+  else
+    echo "$relative_script_path: No Go source files found, skipping go build."
+  fi
   echo "$source_timestamp" > "$timestamp_file"
   echo -n "$GO_OUTPUT_PATH" > $root/target/$module/ldlibdeps
 else

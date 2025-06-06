@@ -10,7 +10,7 @@ cd $module_source_dir
 
 mkdir -p $root/target/components/vowelbase/lib
 # Calculate the highest timestamp for source files
-source_timestamp=$(find . -name "*" -printf '%T@\n' | sort -n | tail -1)
+source_timestamp=$(find . -name "*" -printf '%T@\n' | sort -n | tail -1 || echo 0)
 previous_timestamp=$(cat $root/target/$module/lib/.timestamp 2>/dev/null || echo 0)
 # Compare timestamps and compile if necessary
 if [[ "$source_timestamp" != "$previous_timestamp" ]]; then

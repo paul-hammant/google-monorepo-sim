@@ -1,6 +1,6 @@
 // Custom assert implementation for strictEqual for now - TODO use NPM version later
 
-import { assert } from 'assert';
+import * as assert from 'assert';
 
 // Mock console.log to capture output
 let capturedOutput = '';

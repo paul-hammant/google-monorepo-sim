@@ -17,9 +17,9 @@ for dep in "${deps[@]}"; do
   elif [[ "$dep" == module:go/* ]]; then
     dep_target_path="$root/target/${dep#module:go/}"
   elif [[ "$dep" == module:java/* ]]; then
-    dep_target_path="$root/target/${dep#module:rust/}"
-  elif [[ "$dep" == module:rust/* ]]; then
     dep_target_path="$root/target/${dep#module:java/}"
+  elif [[ "$dep" == module:rust/* ]]; then
+    dep_target_path="$root/target/${dep#module:rust/}"
   elif [[ "$dep" == module:kotlin/* ]]; then
     dep_target_path="$root/target/${dep#module:kotlin/}"
   elif [[ "$dep" == lib:javascript/* ]]; then
@@ -52,5 +52,7 @@ for dep in "${deps[@]}"; do
   fi
 done
 
-# Output all collected NPM mappings, one per line
-printf "%s\n" "${collected_npm_mappings[@]}"
+# Output all collected NPM mappings, one per line, only if there are mappings
+if [ ${#collected_npm_mappings[@]} -gt 0 ]; then
+  printf "%s\n" "${collected_npm_mappings[@]}"
+fi

@@ -31,11 +31,12 @@ INITIAL_PATHS='{
 # It only needs compilerOptions.paths.
 TSCONFIG_CONTENT="{
   \"compilerOptions\": {
-    \"paths\": {},
-    \"typeRoots\": [\"typings\", \"$root/libs/javascript/npm_vendored/node_modules/@types\"]
-  },
-  \"include\": [\"src/**/*.ts\", \"typings/**/*.d.ts\"]
+    \"paths\": {}
+  }
 }"
+
+#    \"typeRoots\": [\"typings\", \"$root/libs/javascript/npm_vendored/node_modules/@types\"]
+#  \"include\": [\"src/**/*.ts\", \"typings/**/*.d.ts\"]
 
 # Merge initial paths (e.g., ffi-napi)
 TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --argjson initial_paths "$INITIAL_PATHS" '.compilerOptions.paths += $initial_paths')

@@ -9,9 +9,15 @@ shift 3
 npm_deps=("$@") # e.g. "libs:javascript/assert"
 
 base_tsconfig_path="$root/target/$target_dir_suffix/base-tsconfig.json"
+package_map_path="$root/libs/javascript/npm_vendored/package-map"
 
 if [ ! -f "$base_tsconfig_path" ]; then
   echo "Error: base-tsconfig.json not found at $base_tsconfig_path" >&2
+  exit 1
+fi
+
+if [ ! -f "$package_map_path" ]; then
+  echo "Error: package-map not found at $package_map_path" >&2
   exit 1
 fi
 
@@ -21,22 +27,22 @@ paths_json=$(jq -r '.compilerOptions.paths // {}' "$base_tsconfig_path")
 for npm_dep_full_name in "${npm_deps[@]}"; do
   dep_short_name="${npm_dep_full_name#libs:javascript/}" # "assert"
 
-  new_path_entry_json_array="" # Store the JSON array string e.g. "["path"]"
-  if [ "$dep_short_name" == "assert" ]; then
-    # Path to the directory containing @types/node, letting TSC resolve specific .d.ts
-    # The path value itself must be a string within the JSON array.
-    type_path="$root/libs/javascript/npm_vendored/node_modules/@types/node"
-    new_path_entry_json_array="[\"$type_path\"]" # Corrected: Ensure $type_path is quoted in the JSON string
-  else
-    # For non-'assert' dependencies, we will currently not add them to paths,
-    # as the original logic pointed to JS files, which is incorrect for type resolution.
-    # This part can be expanded if other npm deps need specific type path mappings.
-    echo "Info: Skipping path generation for non-assert dependency '$dep_short_name'. Current logic focuses on 'assert' type resolution." >&2
-    continue # Move to the next dependency
-  fi
+  # Find the path from package-map
+  line=$(grep "^${dep_short_name}:" "$package_map_path" || true)
 
-  if [ -n "$new_path_entry_json_array" ]; then
+  if [ -n "$line" ]; then
+    dep_path_suffix=$(echo "$line" | cut -d: -f2)
+    # Construct the full path to the type definition file
+    type_path="$root/libs/javascript/npm_vendored/$dep_path_suffix"
+    
+    # For tsconfig paths, we usually want to point to the file, not a directory.
+    # The key will be the module name, and the value an array with the path to its declaration.
+    new_path_entry_json_array="[\"$type_path\"]"
+
     paths_json=$(echo "$paths_json" | jq --arg key "$dep_short_name" --argjson value "$new_path_entry_json_array" '. + {($key): $value}')
+  else
+    echo "Info: No mapping found for npm dependency '$dep_short_name' in $package_map_path. Skipping path generation." >&2
+    continue
   fi
 done
 

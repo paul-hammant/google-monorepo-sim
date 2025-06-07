@@ -9,7 +9,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "assert": "^2.1.0",
     "ffi-napi-v22": "^0.0.1"
   },
   "devDependencies": {

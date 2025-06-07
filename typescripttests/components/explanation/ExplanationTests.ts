@@ -26,6 +26,8 @@ function runTests() {
 
     // Reset captured output for potential future tests
     capturedOutput = '';
+
+    console.log("tests passed")
 }
 
 runTests();

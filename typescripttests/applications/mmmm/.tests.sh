@@ -16,17 +16,6 @@ npm_deps=(
   "libs:javascript/assert"
 )
 
-# Extract actual paths for npm dependencies from package-map
-npm_deps_paths=()
-while IFS= read -r line; do
-  IFS=':' read -r key path <<< "$line"
-  for npm_dep in "${npm_deps[@]}"; do
-    if [[ "$npm_dep" == "libs:javascript:$key" ]]; then
-      npm_deps_paths+=("$root/libs/javascript/npm_vendored/$path")
-    fi
-  done
-done < "$root/libs/javascript/npm_vendored/package-map"
-
 # Visit compile-time deps and invoke their .compile.sh scripts
 source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
@@ -46,6 +35,8 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
     "$root" "$module_source_dir" "$root/target/tests/$module" "$(cat "$root/target/tests/$module/tsdeps")"
+
+  "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "tests/$module" "${npm_deps[@]}"
 
   # Compile TypeScript test files
   tsc

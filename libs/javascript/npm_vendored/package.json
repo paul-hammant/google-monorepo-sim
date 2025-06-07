@@ -12,6 +12,8 @@
     "ffi-napi-v22": "^0.0.1"
   },
   "devDependencies": {
-    "@types/assert": "^1.5.11"
+    "@types/assert": "^1.5.11",
+    "@types/mocha": "^10.0.6",
+    "mocha": "^10.4.0"
   }
 }

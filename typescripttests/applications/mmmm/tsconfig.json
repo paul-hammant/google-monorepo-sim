@@ -12,5 +12,8 @@
     "baseUrl": ".",
     "declaration": true
   },
-  "include": ["*.ts"]
+  "include": [
+    "*.ts",
+    "../../../target/tests/applications/mmmm/types.d.ts"
+  ]
 }

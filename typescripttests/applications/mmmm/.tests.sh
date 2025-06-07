@@ -52,7 +52,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
       echo "$root/target" # Ensure base target is included for alias resolution
       # Prepend $root/target/ to each path from tsdeps
       sed "s|^|$root/target/|" "$root/target/tests/$module/tsdeps" 2>/dev/null
-      echo "$root/libs/javascript/node_modules/ffi-napi" # Add path to vendored JS libraries like ffi-napi
+      echo "$root/libs/javascript/npm_vendored/node_modules" # Add path for vendored npm modules
     } | sort -u | paste -sd ":" -
   )
 

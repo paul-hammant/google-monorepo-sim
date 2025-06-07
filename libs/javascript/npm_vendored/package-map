@@ -1,2 +1,3 @@
 assert:node_modules/@types/assert/index.d.ts
 ffi-napi:node_modules/ffi-napi-v22/lib/ffi.js
+mocha:node_modules/@types/mocha/index.d.ts

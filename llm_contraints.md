@@ -1,6 +1,6 @@
 # Monorepo Build System General Guide
 
-This document outlines the structure and functionality of our monorepo's custom build system. While it uses Bash scripts, its design principles are heavily inspired by build systems like Bazel, which uses Starlark. The goal is to provide dependency-aware build process that supports multiple languages within a single repository. Hermetic, parallel and similar are out of scope.
+This document outlines the structure and functionality of our monorepo's custom build system. While it uses Bash scripts, its design principles are heavily inspired by build systems like Bazel, which uses Starlark. The goal is to provide dependency-aware build system that supports multiple languages within a single repository. Hermetic, parallel and similar are out of scope.
 
 ## Core Concepts: A Bazel-like Approach in Bash
 
@@ -94,6 +94,17 @@ You can build and test individual modules or entire sections of the repository b
     ```bash
     ./.all-tests.sh
     ```
-# TSCONSRAINTS: Working with TypeScript components specifically.  
+# Working with TypeScript components specifically.  
 
-There is a packages.json file at `libs/javascript/npm_vendored/package.json` that `npm install` uses to make node_modules at that level. After that though, npm is not used for dependency. Other bash-centric ways of plucking dependencies from there, and making them available to `tsc` invocations via a base-tsconfig.json (generated into target/ by hash and jq) and one that inherits from that that's co-located with the module TS source.  The latter contains no path mappings, and relies on the paths set in the generated one. All deps pertinent to TS imports should be a path mapping in the relevant base-tsconfig.json. Nothing in any tsconfig should attempt to mount a general package root: they're always very specific. 
+Prompt ref: TSCONSRAINTS
+
+There is a packages.json file at `libs/javascript/npm_vendored/package.json` that `npm install` uses to make node_modules at that level (not root of repo). After that though, npm is not used for dependencies. Instead, other bash-centric ways of plucking dependencies from there, and making them available to `tsc` invocations via a base-tsconfig.json (generated into target/ by bash and jq) and one that inherits from that that is co-located with the module TS source.  The latter contains no path mappings, and relies on the paths set in the generated one. All deps pertinent to TS imports should be a path mapping in the relevant base-tsconfig.json. Nothing in any tsconfig should attempt to mount a general package root: they're always very specific. 
+
+A TypeScript dependence on @types/assert is working in ./typescripttests/components/explanation/.tests.sh
+
+Rules: 
+
+1. Do not add `"include": ["*.ts"]` to any tsconfig.json, it is not needed.
+2. Do not add `"include": [/any/path/to/global.d.ts"]` it is the wrong solution for a bazel-style monorepo like this.
+3. Do not create a "global.d.ts" anywhere
+4. Do not create *.d.ts files in the source tree for things that @types/* from npm-land should cover.

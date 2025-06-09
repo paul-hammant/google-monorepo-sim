@@ -33,10 +33,14 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
   "$root/shared-build-scripts/make-target-tsdeps-file.sh" "$root" "$module" "$root/target/tests/$module/typescript_module_deps_including_transitive" "${deps[@]}"
 
+  "$root/shared-build-scripts/make-target-npmdeps-file.sh" "$root" "$module" "$root/target/tests/$module/npm_deps_including_transitive" "${npm_deps[@]}"
+
+  "$root/shared-build-scripts/make-target-shared-library-deps-file.sh" "$root" "$module" "$root/target/tests/$module/shared_library_deps_including_transitive" "${deps[@]}"
+
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
     "$root" "$module_source_dir" "$root/target/tests/$module" "$(cat "$root/target/tests/$module/typescript_module_deps_including_transitive")"
 
-  "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "tests/$module" "${npm_deps[@]}"
+  "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "tests/$module" $(cat "$root/target/tests/$module/npm_deps_including_transitive")
 
   # Compile TypeScript test files
   tsc

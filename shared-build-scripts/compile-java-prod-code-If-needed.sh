@@ -14,6 +14,9 @@ if [ "${#deps[@]}" -ne 0 ]; then
   )
 fi
 
+# Generate shared library dependencies file using the new transitive system
+"$root/shared-build-scripts/make-target-shared-library-deps-file.sh" "$root" "$module" "$root/target/$module/shared_library_deps_including_transitive" "${deps[@]}"
+
 source_timestamp=$(find . -mindepth 1 -name "*" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1 || echo 0)
 previous_timestamp=$(cat "$root/target/$module/classes/$module/.timestamp" 2>/dev/null || echo 0)
 # Compare timestamps and compile if necessary

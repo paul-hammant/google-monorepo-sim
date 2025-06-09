@@ -19,6 +19,14 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
     cargo build --release --target-dir="$root/target/$module/lib"
     echo $source_timestamp > $root/target/$module/lib/.timestamp
     echo -n "$root/target/$module/lib/release/libvowelbase.so" > $root/target/$module/ldlibdeps
+    
+    # Generate shared library dependencies file (Rust modules can have dependencies on other native modules)
+    deps=()  # This Rust module has no dependencies currently
+    "$root/shared-build-scripts/make-target-shared-library-deps-file.sh" "$root" "$module" "$root/target/$module/shared_library_deps_including_transitive" "${deps[@]}"
+    # Add our own shared library to the transitive dependencies
+    echo "$root/target/$module/lib/release/libvowelbase.so" >> "$root/target/$module/shared_library_deps_including_transitive"
+    # Remove duplicates and sort
+    sort -u "$root/target/$module/shared_library_deps_including_transitive" -o "$root/target/$module/shared_library_deps_including_transitive"
 else
     echo "$relative_script_path: skipping compilation of prod code (not changed)"
 fi

@@ -25,10 +25,21 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   deps=()
   "$root/shared-build-scripts/make-target-tsdeps-file.sh" "$root" "$module" "$root/target/$module/typescript_module_deps_including_transitive" "${deps[@]}"
 
+  # Define npm dependencies (empty for this component)
+  npm_deps=()
+  "$root/shared-build-scripts/make-target-npmdeps-file.sh" "$root" "$module" "$root/target/$module/npm_deps_including_transitive" "${npm_deps[@]}"
+
+  "$root/shared-build-scripts/make-target-shared-library-deps-file.sh" "$root" "$module" "$root/target/$module/shared_library_deps_including_transitive" "${deps[@]}"
+
   # Generate base-tsconfig.json for the production module.
   # The self-path mapping is now handled by make-target-tsdeps-file.sh and generate-typescript-base-tsconfig-json.sh
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
     "$root" "$module_source_dir" "$root/target/$module" "$(cat "$root/target/$module/typescript_module_deps_including_transitive")"
+
+  # Add npm dependencies to tsconfig.json if any exist
+  if [[ -s "$root/target/$module/npm_deps_including_transitive" ]]; then
+    "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "$module" $(cat "$root/target/$module/npm_deps_including_transitive")
+  fi
 
   tsc
 

@@ -1,0 +1,2 @@
+# This is the registry's own config - it can still use crates.io to build the vendored deps
+# Individual Rust modules will have their own .cargo/config.toml pointing to this registry

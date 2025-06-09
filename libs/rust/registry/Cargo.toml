@@ -1,0 +1,27 @@
+[package]
+name = "rust_registry"
+version = "1.0.0"
+edition = "2021"
+
+# This registry contains all vendored Rust dependencies for the monorepo
+# 
+# WORKFLOW:
+# 1. Add new direct dependencies below
+# 2. Run: cargo vendor vendor
+# 3. Run: cargo build --release  
+# 4. Run: ./generate-dependency-graph.sh > DEPENDENCY-ANALYSIS.md
+# 5. Git add/commit vendor/, target/, and DEPENDENCY-ANALYSIS.md
+#
+# Current dependency graph (see DEPENDENCY-ANALYSIS.md for details):
+# - 1 direct dependency: jni
+# - 22 total dependencies (including 21 transitive)
+# - Key transitive deps from jni: cesu8, combine, jni-sys, log, thiserror
+
+[dependencies]
+# JNI bindings for calling Java from Rust
+# Brings in: cesu8, combine (bytes, memchr), jni-sys, log, thiserror (thiserror-impl, proc-macro2, quote, syn, unicode-ident)
+# Build deps: walkdir (same-file)
+jni = "0.20.0"
+
+# Add new dependencies here as needed by modules in the monorepo
+# Always update DEPENDENCY-ANALYSIS.md after changes

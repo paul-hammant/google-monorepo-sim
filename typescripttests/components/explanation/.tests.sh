@@ -48,10 +48,10 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
   NODE_PATH=$(
     {
-      echo "$root/target/tests/$module" # Output directory for test classes
+      echo "$root/target/tests/$module/js" # Output directory for test classes
       echo "$root/target" # Add the base target directory for alias resolution
-      # Prepend $root/target/ to each path from tsdeps
-      sed "s|^|$root/target/|" "$root/target/tests/$module/typescript_module_deps_including_transitive" 2>/dev/null
+      # Use the tsdeps paths directly (they're already fully-qualified paths to js directories)
+      cat "$root/target/tests/$module/typescript_module_deps_including_transitive" 2>/dev/null
       echo "$root/libs/javascript/npm_vendored/node_modules" # Add path for vendored npm modules
     } | sort -u | paste -sd ":" -
   )
@@ -60,7 +60,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   export NODE_PATH
 
   # Run tests using Mocha
-  node "$root/libs/javascript/npm_vendored/node_modules/mocha/bin/mocha.js" "$root/target/tests/$module/ExplanationTests.js"
+  node "$root/libs/javascript/npm_vendored/node_modules/mocha/bin/mocha.js" "$root/target/tests/$module/js/typescripttests/$module/ExplanationTests.js"
   echo "$source_timestamp" > "$timestamp_file"
 
 else

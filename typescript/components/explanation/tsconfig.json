@@ -1,7 +1,7 @@
 {
   "extends": "../../../target/components/explanation/base-tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../target/components/explanation",
+    "outDir": "../../../target/components/explanation/js/components/explanation",
     "rootDir": "./",
     "module": "commonjs",
     "target": "es2016",

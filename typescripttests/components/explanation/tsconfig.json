@@ -1,7 +1,7 @@
 {
   "extends": "../../../target/tests/components/explanation/base-tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../target/tests/components/explanation",
+    "outDir": "../../../target/tests/components/explanation/js/typescripttests/components/explanation",
     "rootDir": "./",
     "module": "commonjs",
     "target": "es2016",

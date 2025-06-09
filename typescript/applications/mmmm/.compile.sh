@@ -25,7 +25,6 @@ source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh
 
 # Create directory for compiled classes (JS output)
 mkdir -p "$root/target/$module"
-mkdir -p "$root/target/$module/$module" # For timestamp file
 
 # Timestamp-based compilation
 timestamp_file="$root/target/$module/.timestamp"

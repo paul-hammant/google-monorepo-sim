@@ -41,11 +41,12 @@ TSCONFIG_CONTENT="{
 # Merge initial paths (e.g., ffi-napi)
 TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --argjson initial_paths "$INITIAL_PATHS" '.compilerOptions.paths += $initial_paths')
 
-# Iterate over TypeScript dependency *source-relative paths* to collect their path mappings
-for dep_source_path_full in $deps_source_paths_string; do
-  # Extract the actual module path from the "module:typescript/..." format
-  if [[ "$dep_source_path_full" == module:typescript/* ]]; then
-    module_path_only="${dep_source_path_full#module:typescript/}"
+# Iterate over TypeScript dependency paths to collect their path mappings
+for dep_path_full in $deps_source_paths_string; do
+  # Handle both old module:typescript/* format and new fully-qualified paths
+  if [[ "$dep_path_full" == module:typescript/* ]]; then
+    # Old format - extract the actual module path from the "module:typescript/..." format
+    module_path_only="${dep_path_full#module:typescript/}"
 
     # Calculate the relative path from the consumer's source directory to the dependency's target directory
     # Example: from typescript/applications/mmmm to target/components/explanation
@@ -56,10 +57,23 @@ for dep_source_path_full in $deps_source_paths_string; do
     json_value="[\"$value\"]"
 
     TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --arg key "$key" --argjson value "$json_value" '.compilerOptions.paths[$key] = $value')
+  elif [[ "$dep_path_full" == */target/*/js ]]; then
+    # New format - fully-qualified path to transpiled .js directory
+    # Extract module path from the full path: /path/to/root/target/components/explanation/js -> components/explanation
+    module_path_only="${dep_path_full#$root/target/}"
+    module_path_only="${module_path_only%/js}"
+
+    # Calculate the relative path from the consumer's source directory to the dependency's js directory
+    relative_target_path=$(realpath --relative-to="$consumer_module_source_dir" "$dep_path_full")
+
+    key="$module_path_only/*"
+    value="$relative_target_path/$module_path_only/*"
+    json_value="[\"$value\"]"
+
+    TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --arg key "$key" --argjson value "$json_value" '.compilerOptions.paths[$key] = $value')
   else
-    # This block handles cases where the tsdeps file might contain non-module:typescript paths
-    # For now, we'll just warn and skip, as the request is focused on module paths.
-    echo "Warning: Unexpected dependency format in tsdeps: $dep_source_path_full. Skipping path inclusion." >&2
+    # Skip paths that don't match expected formats
+    echo "Warning: Unrecognized dependency path format: $dep_path_full. Skipping path inclusion." >&2
   fi
 done
 

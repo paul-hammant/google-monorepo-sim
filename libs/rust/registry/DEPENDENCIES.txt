@@ -1,0 +1,71 @@
+# Direct dependencies (explicitly in Cargo.toml)
+# Format: direct:<crate_name>:<version>
+direct:jni:^0.20.0
+
+# All dependencies (direct + transitive)
+# Format: all:<crate_name>:<version>
+all:bytes:1.10.1
+all:cesu8:1.1.0
+all:combine:4.6.7
+all:jni:0.20.0
+all:jni-sys:0.3.0
+all:log:0.4.27
+all:memchr:2.7.4
+all:proc-macro2:1.0.95
+all:quote:1.0.40
+all:same-file:1.0.6
+all:syn:2.0.101
+all:thiserror:1.0.69
+all:thiserror-impl:1.0.69
+all:unicode-ident:1.0.18
+all:walkdir:2.5.0
+all:winapi-util:0.1.9
+all:windows_aarch64_gnullvm:0.52.6
+all:windows_aarch64_msvc:0.52.6
+all:windows_i686_gnu:0.52.6
+all:windows_i686_gnullvm:0.52.6
+all:windows_i686_msvc:0.52.6
+all:windows-sys:0.59.0
+all:windows-targets:0.52.6
+all:windows_x86_64_gnu:0.52.6
+all:windows_x86_64_gnullvm:0.52.6
+all:windows_x86_64_msvc:0.52.6
+
+# Dependency relationships
+# Format: depends:<crate_name>:<dependency_name>:<version>
+
+# Build-only dependencies
+# Format: build:<crate_name>:<version>
+build:jni:null
+
+# Dependency depth from direct dependencies
+# Format: depth:<crate_name>:<depth_level>
+
+# Vendor paths for sparse checkout
+# Format: vendor:<crate_name>:<relative_path>
+vendor:bytes:libs/rust/registry/vendor/bytes
+vendor:cesu8:libs/rust/registry/vendor/cesu8
+vendor:combine:libs/rust/registry/vendor/combine
+vendor:jni:libs/rust/registry/vendor/jni
+vendor:jni-sys:libs/rust/registry/vendor/jni-sys
+vendor:log:libs/rust/registry/vendor/log
+vendor:memchr:libs/rust/registry/vendor/memchr
+vendor:proc-macro2:libs/rust/registry/vendor/proc-macro2
+vendor:quote:libs/rust/registry/vendor/quote
+vendor:same-file:libs/rust/registry/vendor/same-file
+vendor:syn:libs/rust/registry/vendor/syn
+vendor:thiserror:libs/rust/registry/vendor/thiserror
+vendor:thiserror-impl:libs/rust/registry/vendor/thiserror-impl
+vendor:unicode-ident:libs/rust/registry/vendor/unicode-ident
+vendor:walkdir:libs/rust/registry/vendor/walkdir
+vendor:winapi-util:libs/rust/registry/vendor/winapi-util
+vendor:windows-sys:libs/rust/registry/vendor/windows-sys
+vendor:windows-targets:libs/rust/registry/vendor/windows-targets
+vendor:windows_aarch64_gnullvm:libs/rust/registry/vendor/windows_aarch64_gnullvm
+vendor:windows_aarch64_msvc:libs/rust/registry/vendor/windows_aarch64_msvc
+vendor:windows_i686_gnu:libs/rust/registry/vendor/windows_i686_gnu
+vendor:windows_i686_gnullvm:libs/rust/registry/vendor/windows_i686_gnullvm
+vendor:windows_i686_msvc:libs/rust/registry/vendor/windows_i686_msvc
+vendor:windows_x86_64_gnu:libs/rust/registry/vendor/windows_x86_64_gnu
+vendor:windows_x86_64_gnullvm:libs/rust/registry/vendor/windows_x86_64_gnullvm
+vendor:windows_x86_64_msvc:libs/rust/registry/vendor/windows_x86_64_msvc

@@ -22,7 +22,7 @@ jar_args=(-C "$root/target/$module/classes" .)
 
 while IFS= read -r line; do
   [ -n "$line" ] && jar_args+=(-C "$line" .)
-done < "$root/target/$module/jvmdeps"
+done < "$root/target/$module/jvm_classpath_deps_including_transitive"
 
 while IFS= read -r line; do
   dir=$(dirname "$line")

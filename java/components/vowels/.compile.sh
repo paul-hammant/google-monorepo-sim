@@ -21,7 +21,7 @@ mkdir -p $root/target/$module/classes
 CLASSPATH=$(
   {
     echo "$root/target/$module/classes"
-    for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/jvmdeps" 2>/dev/null; done
+    for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/jvm_classpath_deps_including_transitive" 2>/dev/null; done
   } | sort -u | paste -sd ":" -
 )
 

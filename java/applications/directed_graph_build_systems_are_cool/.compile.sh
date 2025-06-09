@@ -33,7 +33,7 @@ CLASSPATH=$(
     for dep in "${deps[@]}"; do
       depmod="${dep#module:java/}"
       [ "$depmod" != "$dep" ] || depmod="${dep#module:kotlin/}"
-      cat "$root/target/$depmod/jvmdeps" 2>/dev/null
+      cat "$root/target/$depmod/jvm_classpath_deps_including_transitive" 2>/dev/null
     done
   } | sort -u | paste -sd ":" -
 )

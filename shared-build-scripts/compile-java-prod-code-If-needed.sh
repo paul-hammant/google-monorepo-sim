@@ -25,7 +25,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
         exit 1
     fi
     echo "$source_timestamp" > "$root/target/$module/classes/$module/.timestamp"
-    echo "$CLASSPATH" | sed 's/:/\n/g' > "$root/target/$module/jvmdeps"
+    echo "$CLASSPATH" | sed 's/:/\n/g' > "$root/target/$module/jvm_classpath_deps_including_transitive"
     echo -n "$LDLIB_DEPS" | sponge "$root/target/$module/ldlibdeps"
     sed -i '/^[[:space:]]*$/d' "$root/target/$module/ldlibdeps"
     echo "" >> "$root/target/$module/ldlibdeps"

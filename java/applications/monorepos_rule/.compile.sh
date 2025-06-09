@@ -28,7 +28,7 @@ CLASSPATH=$(
     echo "$root/target/$module/classes"
 for dep in "${deps[@]}"; do
       if [[ $dep == module:java/* || $dep == module:kotlin/* ]]; then
-        cat "$root/target/${dep#module:*/}/jvmdeps" 2>/dev/null
+        cat "$root/target/${dep#module:*/}/jvm_classpath_deps_including_transitive" 2>/dev/null
       fi
     done
   } | sort -u | paste -sd ":" -

@@ -41,7 +41,7 @@ The heart of the Bazel-like behavior lies in how dependencies are managed:
 2.  **Graph Traversal**: The `shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh` script is called by each module. It reads the `deps` array and recursively invokes the `.compile.sh` script for each dependency. This ensures that all dependencies are built before the module that depends on them, effectively traversing the build graph.
 
 3.  **Artifact Passing**: Compiled artifacts and metadata are passed between modules via files in the `target/` directory.
-    -   `jvmdeps`: A file containing the classpath needed by a Java/Kotlin module.
+    -   `jvm_classpath_deps_including_transitive`: A file containing the classpath needed by a Java/Kotlin module.
     -   `ldlibdeps`: A file containing the path to a native shared library (`.so`, `.dll`, `.dylib`).
     -   `tsdeps`: A file containing a list of TypeScript dependency paths for tsconfig generation.
     -   `npm_deps` as mentioned.
@@ -96,15 +96,15 @@ You can build and test individual modules or entire sections of the repository b
     ```
 # Working with TypeScript components specifically.  
 
-Prompt ref: TSCONSRAINTS
-
 There is a packages.json file at `libs/javascript/npm_vendored/package.json` that `npm install` uses to make node_modules at that level (not root of repo). After that though, npm is not used for dependencies. Instead, other bash-centric ways of plucking dependencies from there, and making them available to `tsc` invocations via a base-tsconfig.json (generated into target/ by bash and jq) and one that inherits from that that is co-located with the module TS source.  The latter contains no path mappings, and relies on the paths set in the generated one. All deps pertinent to TS imports should be a path mapping in the relevant base-tsconfig.json. Nothing in any tsconfig should attempt to mount a general package root: they're always very specific. 
 
 A TypeScript dependence on @types/assert is working in ./typescripttests/components/explanation/.tests.sh
+Unless I am wrong this is a proof that `assert` and `mocha` can be depended on using npm_deps() in bash build scripts
 
-Rules: 
+## Rules for future LLM work
 
-1. Do not add `"include": ["*.ts"]` to any tsconfig.json, it is not needed.
-2. Do not add `"include": [/any/path/to/global.d.ts"]` it is the wrong solution for a bazel-style monorepo like this.
-3. Do not create a "global.d.ts" anywhere
-4. Do not create *.d.ts files in the source tree for things that @types/* from npm-land should cover.
+1. Do not add `"include": ["*.ts"]` to any tsconfig.json, that is not needed.
+2. Do not add `"include": [/any/path/to/global.d.ts"]` to any tsconfig.json it is the wrong solution for a bazel-style monorepo like this.
+3. Do not create a "global.d.ts" anywhere in the sourcetree for now
+4. Do not create *.d.ts files in the source tree for things that @types/* from npm-land should define.
+5. It is OK to suggest at any time thinks that should be changed in libs/javascript/npm_vendored/package.js and require a npm-install in that dir but npm_deps() is the right place to bring them in

@@ -16,7 +16,7 @@ deps=(
 )
 
 # Visit compile-time deps and invoke their .compile.sh scripts
-for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
 # Create directories for compiled classes
 mkdir -p $root/target/$module/classes # For main code if any in this module (unlikely for tests)
@@ -27,8 +27,8 @@ mkdir -p $root/target/$module/test-classes/$module # For timestamp file
 CLASSPATH=$(
   {
     echo "$root/target/${deps[0]#module:kotlin/}/classes" # Compiled main Kotlin code
-    # Add jvmdeps from the main module (assuming it lists .class files or JARs)
-    cat "$root/target/${deps[0]#module:kotlin/}/jvmdeps" 2>/dev/null
+    # Add jvm_classpath_deps_including_transitive from the main module (assuming it lists .class files or JARs)
+    cat "$root/target/${deps[0]#module:kotlin/}/jvm_classpath_deps_including_transitive" 2>/dev/null || true
     echo "$KOTLIN_HOME/lib/kotlin-stdlib.jar"
   } | sort -u | paste -sd ":" -
 )
@@ -66,21 +66,21 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   echo "Kotlin test compilation successful for module: $module"
   echo "$source_timestamp" > "$timestamp_file"
 
-  # Create a jvmdeps file for this test module (if needed by other scripts)
+  # Create a jvm_classpath_deps_including_transitive file for this test module (if needed by other scripts)
   # For now, it's empty as test modules usually aren't dependencies for compilation.
-  touch $root/target/$module/jvmdeps
-  echo "Created/updated jvmdeps for test module $module"
+  touch $root/target/$module/jvm_classpath_deps_including_transitive
+  echo "Created/updated jvm_classpath_deps_including_transitive for test module $module"
 
   # Runtime Classpath for running tests:
   # - Compiled test classes
-  # - Compiled main code classes (and its direct dependencies via jvmdeps)
+  # - Compiled main code classes (and its direct dependencies via jvm_classpath_deps_including_transitive)
   # - Kotlin stdlib
   # - Kotest libraries
   RUNTIME_CLASSPATH=$(
     {
       echo "$root/target/$module/test-classes"
       echo "$root/target/${deps[0]#module:kotlin/}/classes"
-      cat "$root/target/${deps[0]#module:kotlin/}/jvmdeps" 2>/dev/null
+      cat "$root/target/${deps[0]#module:kotlin/}/jvm_classpath_deps_including_transitive" 2>/dev/null || true
       echo "$KOTLIN_HOME/lib/kotlin-stdlib.jar"  # should be in libs:/ ??
       echo "CLASSPATH"
       echo "$LIBS_CLASSPATH"

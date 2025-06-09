@@ -11,6 +11,5 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "declaration": true
-  },
-  "include": ["*.ts"]
+  }
 }

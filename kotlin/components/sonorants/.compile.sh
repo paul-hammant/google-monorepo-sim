@@ -15,6 +15,15 @@ mkdir -p $root/target/$module/classes/$module # For timestamp file
 # Define KOTLIN_HOME if not set, common location for Kotlin compiler
 : "${KOTLIN_HOME:=/usr/share/kotlin}"
 
+deps=(
+)
+
+# Visit compile-time deps and invoke their .compile.sh scripts
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
+
+# Create directory for compiled classes
+mkdir -p $root/target/$module/classes
+
 CLASSPATH=(
   "$root/target/$module/classes"
   "$KOTLIN_HOME/lib/kotlin-stdlib.jar" # Added Kotlin stdlib
@@ -31,7 +40,7 @@ previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   echo "$relative_script_path: compiling prod code"
   find . -name "*.kt" -print0 | xargs -0 kotlinc -d "$root/target/$module/classes" -cp "$classpath_str"
-  echo "$CLASSPATH" | sed 's/:/\n/g' > $root/target/$module/jvmdeps
+  echo "$CLASSPATH" | sed 's/:/\n/g' > $root/target/$module/jvm_classpath_deps_including_transitive
   echo "$source_timestamp" > "$timestamp_file"
   touch $root/target/$module/ldlibdeps
 else

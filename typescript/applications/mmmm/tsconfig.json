@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": "."
-  },
-  "include": ["*.ts", "../../types/global.d.ts"]
+    "baseUrl": ".",
+    "declaration": true
+  }
 }

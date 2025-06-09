@@ -12,8 +12,8 @@ deps=(
   "module:java/components/sibilants"
 )
 
-# Visit compile-time deps amd invoke heir .compile.sh scripts
-for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
+# Visit compile-time deps and invoke their .compile.sh scripts
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
 # Create directory for compiled classes
 mkdir -p $root/target/$module/classes
@@ -22,7 +22,7 @@ CLASSPATH=$(
   {
     echo "$root/target/$module/classes"
     echo "$root/target/$module/test-classes"
-    for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/jvmdeps" 2>/dev/null; done
+    for dep in "${deps[@]}"; do cat "$root/target/${dep#module:java/}/jvm_classpath_deps_including_transitive" 2>/dev/null || true; done
   } | sort -u | paste -sd ":" -
 )
 
@@ -37,7 +37,7 @@ bindeps=(
 LIBS_CLASSPATH=$(
   {
     for bindep in "${bindeps[@]}"; do
-      echo "$root/libs/${bindep#lib:}" 2>/dev/null
+      echo "$root/libs/${bindep#lib:}" 2>/dev/null || true
     done
   } | sort -u | paste -sd ":" -
 )

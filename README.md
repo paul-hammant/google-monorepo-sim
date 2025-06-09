@@ -19,16 +19,18 @@ in the depth-first_recursive_modular_monorepo branch
 
 Install these and set paths etc for your OS. Only of you want to build EVERYTHING. Otherwise just pick the pertinent ones:
 
-* JDK 11 or above. [Linux instructions](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html)
-* Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html) but also do `sudo apt install build-essential` first
+* General unix tools: `sudo apt install moreutils jq build-essential`
+* JDK 21 or above. [Linux instructions](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html)
+* Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 * Kotlin which if you're on Debian you'll want to install [via SDKMan](https://sdkman.io/sdks/kotlin) as the 'apt' installed one is too old
-* Go (see below)
-* Typescript needs Node v22 or above, and the npm-installed tsc (globally).
+* Go 1.24.3 (see below)
+* Typescript [needs Node v22](https://docs.vultr.com/how-to-install-node-js-and-npm-on-debian-12) or above, and the npm-installed tsc (globally).
 * Bash
 
 Also, "Go" via this oneliner as sdk-man doesn't have it:
 
 ``` 
+# See 1.24.3 below
 sudo rm -rf /usr/local/go && \
 curl -o go.tar.gz https://dl.google.com/go/go1.24.3.linux-amd64.tar.gz && \
 sudo tar -C /usr/local -xzf go.tar.gz && \

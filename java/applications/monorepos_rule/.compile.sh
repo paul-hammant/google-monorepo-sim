@@ -17,8 +17,8 @@ deps=(
   "module:java/components/vowels"
 )
 
-# Visit compile-time deps amd invoke heir .compile.sh scripts
-for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
+# Visit compile-time deps and invoke their .compile.sh scripts
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
 mkdir -p "$root/target/$module/classes/$module"
 
@@ -28,7 +28,7 @@ CLASSPATH=$(
     echo "$root/target/$module/classes"
 for dep in "${deps[@]}"; do
       if [[ $dep == module:java/* || $dep == module:kotlin/* ]]; then
-        cat "$root/target/${dep#module:*/}/jvmdeps" 2>/dev/null
+        cat "$root/target/${dep#module:*/}/jvm_classpath_deps_including_transitive" 2>/dev/null
       fi
     done
   } | sort -u | paste -sd ":" -

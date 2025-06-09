@@ -1,0 +1,19 @@
+{
+  "name": "npm_vendored",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ffi-napi-v22": "^0.0.1"
+  },
+  "devDependencies": {
+    "@types/assert": "^1.5.11",
+    "@types/mocha": "^10.0.6",
+    "mocha": "^10.4.0"
+  }
+}

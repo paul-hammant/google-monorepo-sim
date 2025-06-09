@@ -11,6 +11,15 @@ cd $module_source_dir
 
 mkdir -p $root/target/components/glides/classes
 
+deps=(
+)
+
+# Visit compile-time deps and invoke their .compile.sh scripts
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
+
+# Create directory for compiled classes
+mkdir -p $root/target/$module/classes
+
 CLASSPATH=(
   "$root/target/$module/classes"
 )

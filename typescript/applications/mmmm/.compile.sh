@@ -12,11 +12,16 @@ cd "$module_source_dir" # Ensure we are in the module's source directory for rel
 # Define TypeScript dependencies
 deps=(
   "module:typescript/components/explanation"
-  "module:go/components/libnasal" # This one doesn't generate a tsconfig.json for TS paths
+  "module:go/components/nasal"
 )
 
+npm_deps=(
+  "libs:javascript/ffi-napi"
+)
+
+
 # Visit compile-time deps and invoke their .compile.sh scripts
-for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
 # Create directory for compiled classes (JS output)
 mkdir -p "$root/target/$module"
@@ -24,7 +29,7 @@ mkdir -p "$root/target/$module/$module" # For timestamp file
 
 # Timestamp-based compilation
 timestamp_file="$root/target/$module/.timestamp"
-raw_source_timestamp=$(find . -mindepth 1 -name "*.ts" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
+raw_source_timestamp=$(find . -mindepth 1 -name "*" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
 source_timestamp=${raw_source_timestamp:-0}
 previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 
@@ -35,6 +40,8 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
     "$root" "$module_source_dir" "$root/target/$module" "$(cat "$root/target/$module/tsdeps")"
+
+  "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "$module" "${npm_deps[@]}"
 
   # Now run tsc, which will use the existing tsconfig.json that extends the generated one
   tsc

@@ -12,14 +12,19 @@ deps=(
   "module:typescript/components/explanation"
 )
 
+npm_deps=(
+  "libs:javascript/assert"
+  "libs:javascript/mocha"
+)
+
 # Visit compile-time deps and invoke their .compile.sh scripts
-for dep in "${deps[@]}"; do "$root/${dep#module:}/.compile.sh" "$root/.buildStepsDoneLastExecution"; done
+source $root/shared-build-scripts/invoke-all-compile-scripts-for-dependencies.sh "$root" "${deps[@]}"
 
 # Create directory for compiled test classes (JS output)
 mkdir -p $root/target/tests/$module/
 
 timestamp_file="$root/target/tests/$module/.timestamp"
-raw_source_timestamp=$(find . -mindepth 1 -name "*.ts" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
+raw_source_timestamp=$(find . -mindepth 1 -name "*" -type f -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
 source_timestamp=${raw_source_timestamp:-0}
 previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 
@@ -30,6 +35,8 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
 
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
     "$root" "$module_source_dir" "$root/target/tests/$module" "$(cat "$root/target/tests/$module/tsdeps")"
+
+  "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "tests/$module" "${npm_deps[@]}"
 
   # Compile TypeScript test files
   tsc
@@ -45,15 +52,15 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
       echo "$root/target" # Add the base target directory for alias resolution
       # Prepend $root/target/ to each path from tsdeps
       sed "s|^|$root/target/|" "$root/target/tests/$module/tsdeps" 2>/dev/null
+      echo "$root/libs/javascript/npm_vendored/node_modules" # Add path for vendored npm modules
     } | sort -u | paste -sd ":" -
   )
 
   # Set NODE_PATH for Node.js to find modules
   export NODE_PATH
 
-  # Run tests using Node.js
-  # Assuming the test file is ExplanationTests.js in the compiled test-classes directory
-  node "$root/target/tests/$module/ExplanationTests.js"
+  # Run tests using Mocha
+  node "$root/libs/javascript/npm_vendored/node_modules/mocha/bin/mocha.js" "$root/target/tests/$module/ExplanationTests.js"
   echo "$source_timestamp" > "$timestamp_file"
 
 else

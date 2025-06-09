@@ -36,10 +36,10 @@ previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   echo "$relative_script_path: compiling prod code"
 
-  "$root/shared-build-scripts/make-target-tsdeps-file.sh" "$root" "$module" "$root/target/$module/tsdeps" "${deps[@]}"
+  "$root/shared-build-scripts/make-target-tsdeps-file.sh" "$root" "$module" "$root/target/$module/typescript_module_deps_including_transitive" "${deps[@]}"
 
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
-    "$root" "$module_source_dir" "$root/target/$module" "$(cat "$root/target/$module/tsdeps")"
+    "$root" "$module_source_dir" "$root/target/$module" "$(cat "$root/target/$module/typescript_module_deps_including_transitive")"
 
   "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "$module" "${npm_deps[@]}"
 

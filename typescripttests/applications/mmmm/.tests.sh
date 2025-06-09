@@ -33,10 +33,10 @@ previous_timestamp=$(cat "$timestamp_file" 2>/dev/null || echo 0)
 if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
   echo "$relative_script_path: compiling test code and executing tests"
 
-  "$root/shared-build-scripts/make-target-tsdeps-file.sh" "$root" "$module" "$root/target/tests/$module/tsdeps" "${deps[@]}"
+  "$root/shared-build-scripts/make-target-tsdeps-file.sh" "$root" "$module" "$root/target/tests/$module/typescript_module_deps_including_transitive" "${deps[@]}"
 
   "$root/shared-build-scripts/generate-typescript-base-tsconfig-json.sh" \
-    "$root" "$module_source_dir" "$root/target/tests/$module" "$(cat "$root/target/tests/$module/tsdeps")"
+    "$root" "$module_source_dir" "$root/target/tests/$module" "$(cat "$root/target/tests/$module/typescript_module_deps_including_transitive")"
 
   "$root/shared-build-scripts/add-npm-deps-to-base-tsconfig-json.sh" "$root" "$module" "tests/$module" "${npm_deps[@]}"
 
@@ -53,7 +53,7 @@ if [[ "$source_timestamp" != "$previous_timestamp" ]]; then
       echo "$root/target/tests/$module" # Output directory for test classes
       echo "$root/target" # Ensure base target is included for alias resolution
       # Prepend $root/target/ to each path from tsdeps
-      sed "s|^|$root/target/|" "$root/target/tests/$module/tsdeps" 2>/dev/null
+      sed "s|^|$root/target/|" "$root/target/tests/$module/typescript_module_deps_including_transitive" 2>/dev/null
       echo "$root/libs/javascript/npm_vendored/node_modules" # Add path for vendored npm modules
     } | sort -u | paste -sd ":" -
   )

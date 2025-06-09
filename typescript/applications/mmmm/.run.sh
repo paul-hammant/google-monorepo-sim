@@ -7,7 +7,7 @@ module="$(dirname ${script_source#*/typescript/})"
 module_source_dir="$(dirname "$script_source")"
 relative_script_path="${script_source#$root/}"
 
-JS_DEPS=$(cat "$root/target/$module/tsdeps" 2>/dev/null || true | tr '\n' ':')
+JS_DEPS=$(cat "$root/target/$module/typescript_module_deps_including_transitive" 2>/dev/null || true | tr '\n' ':')
 
 cd "$root/target/$module"
 

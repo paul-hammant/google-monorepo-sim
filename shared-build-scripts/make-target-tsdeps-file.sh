@@ -18,11 +18,11 @@ for dep in "${deps[@]}"; do
     dep_path="${dep#module:typescript/}"
     ##echo "DEBUG: Adding direct dep $dep_path" >&2
     deps_incl_transitive+=("$dep")
-    if [[ -f "$root/target/$dep_path/tsdeps" ]]; then
+    if [[ -f "$root/target/$dep_path/typescript_module_deps_including_transitive" ]]; then
       while IFS= read -r trans_dep; do
         ##echo "DEBUG: Adding transitive dep $trans_dep from $dep_path" >&2
         deps_incl_transitive+=("$trans_dep")
-      done < "$root/target/$dep_path/tsdeps"
+      done < "$root/target/$dep_path/typescript_module_deps_including_transitive"
     fi
   fi
 done

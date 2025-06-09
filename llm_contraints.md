@@ -108,3 +108,4 @@ Unless I am wrong this is a proof that `assert` and `mocha` can be depended on u
 3. Do not create a "global.d.ts" anywhere in the sourcetree for now
 4. Do not create *.d.ts files in the source tree for things that @types/* from npm-land should define.
 5. It is OK to suggest at any time thinks that should be changed in libs/javascript/npm_vendored/package.js and require a npm-install in that dir but npm_deps() is the right place to bring them in
+#

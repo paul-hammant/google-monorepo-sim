@@ -1,0 +1,7 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "java/components/vowelbase")
+    build.javac(b)
+}

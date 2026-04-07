@@ -13,24 +13,41 @@ Specifically, the Java, and Rust sources are identical in both, but in different
 The build files are different. There's newer Kotlin modules in trunk, that are not duplicated 
 in the depth-first_recursive_modular_monorepo branch 
 
-# Directed Acyclic Graph Modular Monorepo
+# Build System
 
-## Prerequisites
+## Aether Build (current)
 
-Install these and set paths etc for your OS. Only of you want to build EVERYTHING. Otherwise just pick the pertinent ones:
+The monorepo is built using [Aether Build](https://github.com/paul-hammant/aetherBuild),
+a polyglot build system written in [Aether](https://github.com/paul-hammant/aether).
+Each module has a `.build.ae` file declaring its dependencies and build action:
 
+```aether
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "rust/components/vowelbase")
+    build.javac(b)
+}
+```
+
+A single `ae-build` invocation scans all `.build.ae`, `.tests.ae`, and `.dist.ae` files,
+topologically sorts the dependency graph, generates one linked native binary, and executes
+everything in a single process with an in-memory visited-module map.
+
+### Prerequisites
+
+* [Aether](https://github.com/paul-hammant/aether) compiler (`ae`)
 * General unix tools: `sudo apt install moreutils jq build-essential`
 * JDK 21 or above. [Linux instructions](https://docs.aws.amazon.com/corretto/latest/corretto-21-ug/generic-linux-install.html)
 * Rust and Cargo. [Linux/Mac instructions](https://doc.rust-lang.org/cargo/getting-started/installation.html)
-* Kotlin which if you're on Debian you'll want to install [via SDKMan](https://sdkman.io/sdks/kotlin) as the 'apt' installed one is too old
-* Go 1.24.3 (see below)
-* Typescript [needs Node v22](https://docs.vultr.com/how-to-install-node-js-and-npm-on-debian-12) or above, and the npm-installed tsc (globally).
-* Bash
+* Kotlin: `sudo apt install kotlin`
+* Go 1.24+ (see below)
+* TypeScript: Node v22+, `sudo npm install -g typescript`
 
 Also, "Go" via this oneliner as sdk-man doesn't have it:
 
 ``` 
-# See 1.24.3 below
 sudo rm -rf /usr/local/go && \
 curl -o go.tar.gz https://dl.google.com/go/go1.24.3.linux-amd64.tar.gz && \
 sudo tar -C /usr/local -xzf go.tar.gz && \
@@ -40,60 +57,60 @@ exec $SHELL -l && \
 go version
 ```
 
-Note: If on Windows, use WSL or Git-Bash to be able to use `Bash`
+### Building everything
 
-## Examples of building and running contrived apps
-
-This build technology doesn't have a name - it uses shell scripts and it just for the simulation
-
-All tests for one app and all deps, then make the fat jar, then executing it
-
-```
-$ ./javatests/applications/monorepos_rule/.dist.sh
+```bash
+AETHER=/path/to/ae ae-build
 ```
 
-Running that app for contrived output to stdout:
-
+Output:
 ```
-$ java -Djava.library.path=. -jar ./target/applications/monorepos_rule/bin/monorepos-rule.jar
+ae-build: 18 compile + 2 dist + 17 test
+go/components/nasal: compiling Go prod & test code
+rust/components/vowelbase: compiling prod code
+java/components/vowelbase: compiling prod code
+...
+dist:java/applications/monorepos_rule: packaging monorepos-rule.jar
+...
+javatests/components/vowelbase: tests PASSED
+typescripttests/applications/mmmm: tests PASSED
 ```
 
-All tests for the other app and all deps, them making the fat jar, then executing it 
+18 compile targets across 5 languages, 2 fat jars, 17 test suites — all from one command.
 
-```
-$ ./javatests/applications/directed_graph_build_systems_are_cool/.dist.sh
+### Running the apps
 
+```bash
+java -Djava.library.path=. -jar ./target/applications/monorepos_rule/bin/monorepos-rule.jar
 java -Djava.library.path=. -jar ./target/applications/directed_graph_build_systems_are_cool/bin/directed-graph-build-systems-are-cool.jar
-
-libvowelbase.so extracted successfully.
-DirectedGraphBuildSystemsAreCool instance created:
-D(I)R(E)CT(E)DGR(A)PHB(U)(I)LDSYST(E)MS(A)R(E)C(O)(O)L
-DirectedGraphBuildSystemsAreCool{d=class components.voiced.D, i=class components.vowels.I, ...
 ```
 
-**TypeScript App Example:**
+### Build files
 
-All tests for the TypeScript app and all deps, then executing them:
+Each module directory has:
 
-```bash
-$ ./typescripttests/applications/mmmm/.tests.sh
-```
+| File | Purpose |
+|------|---------|
+| `.build.ae` | Compile — declares deps, invokes language compiler |
+| `.tests.ae` | Test — declares deps + test libs, compiles and runs tests |
+| `.dist.ae` | Package — builds fat jar or other distributable |
 
-All tests for the single TypeScript component, then executing them:
+Dependencies are one-per-line `build.dep(b, "path")` calls — greppable for DAG extraction without compilation.
 
-```bash
-$ ./typescripttests/applications/mmmm/.tests.sh
-```
+### Cross-language dependency chains
 
+- Java → Rust (JNI shared library)
+- Java → Kotlin (JVM classpath interop)
+- Java → Go (shared library via ldlibdeps)
+- TypeScript → Go (FFI via ffi-napi)
 
-You can target any `.dist.sh` script anywhere, or `.tests.sh` or `.compile.sh` where you see them.
+## Legacy bash build system
 
-You can do that from the root folder. You can also do it by cd-ing deeper into the dir structure.
-
-Any target can invoke any of its dependencies build files anywhere else in the relative dir structure.
-
-If you run anything a second time, compile and test invocation are skipped, and there will be a note in the build log to that effect.
-
+The previous build system used `.compile.sh`, `.tests.sh`, and `.dist.sh` bash scripts
+with `shared-build-scripts/` for common logic and `.buildStepsDoneLastExecution` for
+visited-module tracking. This has been fully replaced by Aether Build. The
+`shared-build-scripts/` directory is retained as some helper scripts (tsconfig generation,
+npm path mapping) are still called by the Aether TypeScript SDK.
 
 ## Vendoring in Third-Party Dependencies
 
@@ -108,18 +125,25 @@ Here's the current status of vendoring for different language ecosystems within 
 | Language   | Current Status                                                       |
 |------------|----------------------------------------------------------------------|
 | Java       | complete – see `libs/java/`                                          |
-| Rust       | Not started – Cargo build system is used and it has its own idioms   |
+| Rust       | complete – see `libs/rust/registry/`                                 |
 | Go         | Not started – `go build` is used and it has its own idioms           |
-| TypeScript | No deps presently and no idea how to elegantly do it                 |
-
+| TypeScript | complete – see `libs/javascript/npm_vendored/`                       |
 
 # Sparse-checkout feature (that Google do)
 
-There's also a use of Git sparse-checkout
+There's also a use of Git sparse-checkout, implemented in Aether:
 
-```
-.shared-build-scripts/gcheckout.sh --init
-.shared-build-scripts/gcheckout.sh add javatests/applications/monorepos_rule
+```bash
+# Build the tool once
+ae build shared-build-scripts/gcheckout.ae -o gcheckout
+
+# Initialize sparse checkout
+./gcheckout --init
+
+# Add a module and all its transitive deps
+./gcheckout add javatests/applications/monorepos_rule
 ```
 
-You'd do regular source edit and build steps after that.
+This recursively walks `.build.ae` and `.tests.ae` files, extracting
+`dep()`, `lib()`, `npm_dep()`, and `cargo_dep()` declarations, and adds
+every transitive dependency to the sparse checkout.

@@ -1,0 +1,10 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "java/components/velar")
+    build.lib(b, "java/junit/junit.jar")
+    build.lib(b, "java/hamcrest/hamcrest.jar")
+    build.javac_test(b)
+    build.junit(b)
+}

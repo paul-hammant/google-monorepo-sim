@@ -1,0 +1,10 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "java/applications/directed_graph_build_systems_are_cool")
+    build.lib(b, "java/junit/junit.jar")
+    build.lib(b, "java/hamcrest/hamcrest.jar")
+    build.javac_test(b)
+    build.junit(b)
+}

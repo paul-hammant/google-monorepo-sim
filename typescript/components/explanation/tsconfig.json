@@ -1,6 +1,7 @@
 {
   "extends": "../../../target/components/explanation/base-tsconfig.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "outDir": "../../../target/components/explanation/js/components/explanation",
     "rootDir": "./",
     "module": "commonjs",

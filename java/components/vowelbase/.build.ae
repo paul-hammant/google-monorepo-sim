@@ -1,0 +1,7 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "rust/components/vowelbase")
+    build.javac(b)
+}

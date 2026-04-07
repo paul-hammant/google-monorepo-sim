@@ -1,6 +1,7 @@
 {
   "extends": "../../../target/tests/applications/mmmm/base-tsconfig.json",
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
     "outDir": "../../../target/tests/applications/mmmm/js/typescripttests/applications/mmmm",
     "rootDir": "./",
     "module": "commonjs",

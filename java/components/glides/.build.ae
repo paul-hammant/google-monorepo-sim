@@ -1,0 +1,6 @@
+import build
+
+main() {
+    b = build.start()
+    build.javac(b)
+}

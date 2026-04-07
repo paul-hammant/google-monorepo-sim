@@ -1,0 +1,15 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "java/components/consonants")
+    build.dep(b, "java/components/fricatives")
+    build.dep(b, "java/components/glides")
+    build.dep(b, "java/components/nasal")
+    build.dep(b, "kotlin/components/sonorants")
+    build.dep(b, "java/components/velar")
+    build.dep(b, "java/components/voiced")
+    build.dep(b, "java/components/voiceless")
+    build.dep(b, "java/components/vowels")
+    build.javac(b)
+}

@@ -1,0 +1,7 @@
+import build
+
+main() {
+    b = build.start()
+    build.cargo_dep(b, "libs:rust/jni")
+    build.cargo_build(b, "libvowelbase.so")
+}

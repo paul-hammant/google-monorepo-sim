@@ -1,0 +1,6 @@
+import build
+
+main() {
+    b = build.start()
+    build.go_build(b, "c-shared", "libgonasal.so")
+}

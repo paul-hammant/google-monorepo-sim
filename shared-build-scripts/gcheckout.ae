@@ -1,0 +1,161 @@
+// gcheckout — Aether sparse-checkout tool for google-monorepo-sim
+//
+// Usage (build first, then run with args):
+//   ae build gcheckout.ae -o gcheckout
+//   ./gcheckout --init
+//   ./gcheckout add javatests/applications/monorepos_rule
+//   ./gcheckout --reset
+
+extern os_system(cmd: string) -> int
+extern os_exec(cmd: string) -> string
+extern file_exists(path: string) -> int
+extern string_length(s: string) -> int
+extern string_trim(s: string) -> string
+extern string_contains(s: string, sub: string) -> int
+extern string_index_of(s: string, sub: string) -> int
+extern string_substring(s: string, start: int, end: int) -> string
+extern string_concat(a: string, b: string) -> string
+extern string_starts_with(s: string, prefix: string) -> int
+extern map_new() -> ptr
+extern map_put(m: ptr, key: string, value: ptr)
+extern map_has(m: ptr, key: string) -> int
+extern io_read_file(path: string) -> string
+extern aether_args_count() -> int
+extern aether_args_get(index: int) -> string
+
+sparse_add(path: string) {
+    os_system("git sparse-checkout add ${path} 2>/dev/null")
+}
+
+scan_ae_file(visited: ptr, root: string, ae_file: string) {
+    // Extract module deps — collect all first, then process
+    mod_deps = string_trim(os_exec("grep 'dep(b' ${ae_file} 2>/dev/null | sed 's/.*dep(b, \"//;s/\").*//' || true"))
+    if string_length(mod_deps) > 0 {
+        // Count deps and store for iteration
+        dep_count_str = string_trim(os_exec("echo '${mod_deps}' | wc -l"))
+        i = 1
+        while i <= 50 {
+            dep = string_trim(os_exec("echo '${mod_deps}' | sed -n '${i}p'"))
+            if string_length(dep) == 0 { i = 999 } else {
+                checkout_module(visited, root, dep)
+                i = i + 1
+            }
+        }
+    }
+
+    // Extract lib deps
+    lib_deps = string_trim(os_exec("grep 'lib(b' ${ae_file} 2>/dev/null | sed 's/.*lib(b, \"//;s/\").*//' || true"))
+    if string_length(lib_deps) > 0 {
+        i = 1
+        while i <= 50 {
+            lib = string_trim(os_exec("echo '${lib_deps}' | sed -n '${i}p'"))
+            if string_length(lib) == 0 { i = 999 } else {
+                lib_dir = string_trim(os_exec("dirname libs/${lib}"))
+                if map_has(visited, lib_dir) == 0 {
+                    map_put(visited, lib_dir, "1")
+                    println("  lib: ${lib_dir}")
+                    sparse_add(lib_dir)
+                }
+                i = i + 1
+            }
+        }
+    }
+
+    // Extract npm deps — add vendored dir once
+    npm_deps = string_trim(os_exec("grep 'npm_dep(b' ${ae_file} 2>/dev/null | sed 's/.*npm_dep(b, \"//;s/\").*//' || true"))
+    if string_length(npm_deps) > 0 {
+        if map_has(visited, "libs/javascript/npm_vendored") == 0 {
+            map_put(visited, "libs/javascript/npm_vendored", "1")
+            println("  npm: libs/javascript/npm_vendored")
+            sparse_add("libs/javascript/npm_vendored")
+        }
+    }
+
+    // Extract cargo deps — add rust registry once
+    cargo_deps = string_trim(os_exec("grep 'cargo_dep(b' ${ae_file} 2>/dev/null | sed 's/.*cargo_dep(b, \"//;s/\").*//' || true"))
+    if string_length(cargo_deps) > 0 {
+        if map_has(visited, "libs/rust") == 0 {
+            map_put(visited, "libs/rust", "1")
+            println("  cargo: libs/rust")
+            sparse_add("libs/rust")
+        }
+    }
+}
+
+checkout_module(visited: ptr, root: string, mod_path: string) {
+    if map_has(visited, mod_path) == 1 {
+        return 0
+    }
+    map_put(visited, mod_path, "1")
+    println("  module: ${mod_path}")
+    sparse_add(mod_path)
+
+    // Scan each .ae file in this module
+    base = string_concat(root, "/")
+    base = string_concat(base, mod_path)
+
+    build_ae = string_concat(base, "/.build.ae")
+    if file_exists(build_ae) == 1 {
+        scan_ae_file(visited, root, build_ae)
+    }
+
+    tests_ae = string_concat(base, "/.tests.ae")
+    if file_exists(tests_ae) == 1 {
+        scan_ae_file(visited, root, tests_ae)
+    }
+
+    dist_ae = string_concat(base, "/.dist.ae")
+    if file_exists(dist_ae) == 1 {
+        scan_ae_file(visited, root, dist_ae)
+    }
+
+    return 0
+}
+
+main() {
+    argc = aether_args_count()
+    if argc < 2 {
+        println("Usage: gcheckout --init | add <module_path> | --reset")
+        exit(1)
+    }
+
+    arg1 = aether_args_get(1)
+
+    if string_contains(arg1, "--reset") == 1 {
+        println("Resetting sparse checkout...")
+        os_system("git read-tree --reset -u HEAD")
+        os_system("rm -f .git/info/sparse-checkout")
+        os_system("git sparse-checkout disable")
+        println("Done.")
+        return 0
+    }
+
+    if string_contains(arg1, "--init") == 1 {
+        println("Initializing sparse checkout...")
+        os_system("git sparse-checkout init --cone")
+        os_system("git sparse-checkout add shared-build-scripts")
+        os_system("git sparse-checkout add lib")
+        println("Done. Use: gcheckout add <module_path>")
+        return 0
+    }
+
+    if string_contains(arg1, "add") == 1 {
+        if argc < 3 {
+            println("Usage: gcheckout add <module_path>")
+            exit(1)
+        }
+        mod_path = aether_args_get(2)
+        root = string_trim(os_exec("pwd"))
+        visited = map_new()
+
+        println("Sparse checkout: ${mod_path} + deps")
+        sparse_add("shared-build-scripts")
+        sparse_add("lib")
+        checkout_module(visited, root, mod_path)
+        println("Done.")
+        return 0
+    }
+
+    println("Usage: gcheckout --init | add <module_path> | --reset")
+    exit(1)
+}

@@ -1,0 +1,7 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "go/components/nasal")
+    build.go_test(b)
+}

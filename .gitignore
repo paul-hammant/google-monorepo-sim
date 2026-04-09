@@ -7,7 +7,7 @@ target/
 __pycache__/
 *.iml
 /.buildStepsDoneLastExecution
-.aider*
+.aeb/
 
 # aetherBuild modules
 lib/build
@@ -16,3 +16,4 @@ lib/kotlin
 lib/gomod
 lib/rust
 lib/ts
+lib/container

@@ -1,6 +1,7 @@
 import build
+import kotlin
 
 main() {
     b = build.start()
-    build.kotlinc(b)
+    kotlin.kotlinc(b)
 }

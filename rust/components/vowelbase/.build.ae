@@ -1,7 +1,11 @@
 import build
+import rust
+import rust (lib_name)
 
 main() {
     b = build.start()
     build.cargo_dep(b, "libs:rust/jni")
-    build.cargo_build(b, "libvowelbase.so")
+    rust.cargo_build(b) {
+        lib_name("libvowelbase.so")
+    }
 }

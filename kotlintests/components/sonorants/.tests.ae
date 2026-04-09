@@ -1,8 +1,9 @@
 import build
+import kotlin
 
 main() {
     b = build.start()
     build.dep(b, "kotlin/components/sonorants")
-    build.kotlinc_test(b)
-    build.kotlin_test(b, "components.sonorants.SonorantsTestsKt")
+    kotlin.kotlinc_test(b)
+    kotlin.kotlin_test(b, "components.sonorants.SonorantsTestsKt")
 }

@@ -1,10 +1,11 @@
 import build
+import ts
 
 main() {
     b = build.start()
     build.dep(b, "typescript/applications/mmmm")
     build.npm_dep(b, "libs:javascript/assert")
     build.npm_dep(b, "libs:javascript/mocha")
-    build.tsc(b)
-    build.mocha(b, "target/tests/applications/mmmm/js/typescripttests/applications/mmmm/MmmmU0021Tests.js")
+    ts.tsc(b)
+    ts.mocha(b, "target/tests/applications/mmmm/js/typescripttests/applications/mmmm/MmmmU0021Tests.js")
 }

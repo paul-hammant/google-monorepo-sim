@@ -1,6 +1,7 @@
 import build
+import ts
 
 main() {
     b = build.start()
-    build.tsc(b)
+    ts.tsc(b)
 }

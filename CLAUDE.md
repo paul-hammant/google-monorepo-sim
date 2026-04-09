@@ -5,7 +5,7 @@ This is a simulated Google-style monorepo with a custom Bazel-inspired build sys
 
 ## Build System
 - **Aether Build**: Each module has a `.build.ae` file declaring deps and build actions
-- **Runner**: `ae-build` scans all `.build.ae`/`.tests.ae`/`.dist.ae`, topo-sorts, generates a single linked binary, runs it
+- **Runner**: `aeb` scans all `.build.ae`/`.tests.ae`/`.dist.ae`, topo-sorts, generates a single linked binary, runs it
 - **One process**: In-memory visited-module map prevents redundant builds — no `.buildStepsDoneLastExecution` file
 - **SDK**: `lib/build/module.ae` (symlinked from aetherBuild) provides `javac()`, `kotlinc()`, `go_build()`, `cargo_build()`, `tsc()`, `junit()`, `mocha()`, `shade()`, etc.
 
@@ -41,7 +41,7 @@ This is a simulated Google-style monorepo with a custom Bazel-inspired build sys
 5. **Variable naming**: Don't use `module` as a variable name in `.ae` files (Aether codegen issue)
 
 ## Workflow Tips
-- Build everything: `AETHER=/path/to/ae ae-build`
+- Build everything: `AETHER=/path/to/ae aeb`
 - Clean builds: Remove `target/` directory
 - Add npm deps: Update `package.json` in `libs/javascript/npm_vendored/` then run `npm install`
 - Check dependencies: Look at existing `.build.ae` files for patterns

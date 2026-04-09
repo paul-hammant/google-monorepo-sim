@@ -1,6 +1,11 @@
 import build
+import gomod
+import gomod (build_mode, output_file)
 
 main() {
     b = build.start()
-    build.go_build(b, "c-shared", "libgonasal.so")
+    gomod.go_build(b) {
+        build_mode("c-shared")
+        output_file("libgonasal.so")
+    }
 }

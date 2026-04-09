@@ -1,6 +1,7 @@
 import build
+import java
 
 main() {
     b = build.start()
-    build.shade(b, "applications.monorepos_rule.MonoreposRule", "monorepos-rule.jar")
+    java.shade(b, "applications.monorepos_rule.MonoreposRule", "monorepos-rule.jar")
 }

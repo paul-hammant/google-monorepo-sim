@@ -1,6 +1,7 @@
 import build
+import java
 
 main() {
     b = build.start()
-    build.javac(b)
+    java.javac(b)
 }

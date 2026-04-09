@@ -1,9 +1,10 @@
 import build
+import ts
 
 main() {
     b = build.start()
     build.dep(b, "typescript/components/explanation")
     build.dep(b, "go/components/nasal")
     build.npm_dep(b, "libs:javascript/ffi-napi")
-    build.tsc(b)
+    ts.tsc(b)
 }

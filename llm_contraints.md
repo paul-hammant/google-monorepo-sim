@@ -32,7 +32,7 @@ Each module defines its build and test actions through Aether scripts:
     ```
     Other dep types: `build.lib(b, ...)` for vendored binaries, `build.npm_dep(b, ...)` for npm packages, `build.cargo_dep(b, ...)` for Cargo crates.
 
-2.  **Graph Extraction**: The runner (`ae-build`) greps all `.build.ae` files for `dep(` lines to build the dependency DAG — no compilation needed. Same contract as Bazel's BUILD files.
+2.  **Graph Extraction**: The runner (`aeb`) greps all `.build.ae` files for `dep(` lines to build the dependency DAG — no compilation needed. Same contract as Bazel's BUILD files.
 
 3.  **Linked Execution**: The runner generates a single `.ae` file with one function per module, compiles it to a native binary, and executes it. Each module function calls its deps directly. An in-memory visited-module map prevents redundant builds.
 
@@ -64,7 +64,7 @@ Each module defines its build and test actions through Aether scripts:
 
 ```bash
 # Build and test everything
-AETHER=/path/to/ae ae-build
+AETHER=/path/to/ae aeb
 
 # Output: 18 compile + 2 dist + 17 test
 ```

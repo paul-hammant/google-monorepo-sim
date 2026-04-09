@@ -1,4 +1,5 @@
 import build
+import java
 
 main() {
     b = build.start()
@@ -11,5 +12,5 @@ main() {
     build.dep(b, "java/components/voiced")
     build.dep(b, "java/components/voiceless")
     build.dep(b, "java/components/vowels")
-    build.javac(b)
+    java.javac(b)
 }

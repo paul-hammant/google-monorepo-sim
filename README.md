@@ -31,7 +31,7 @@ main() {
 }
 ```
 
-A single `ae-build` invocation scans all `.build.ae`, `.tests.ae`, and `.dist.ae` files,
+A single `aeb` invocation scans all `.build.ae`, `.tests.ae`, and `.dist.ae` files,
 topologically sorts the dependency graph, generates one linked native binary, and executes
 everything in a single process with an in-memory visited-module map.
 
@@ -60,12 +60,12 @@ go version
 ### Building everything
 
 ```bash
-AETHER=/path/to/ae ae-build
+AETHER=/path/to/ae aeb
 ```
 
 Output:
 ```
-ae-build: 18 compile + 2 dist + 17 test
+aeb: 18 compile + 2 dist + 17 test
 go/components/nasal: compiling Go prod & test code
 rust/components/vowelbase: compiling prod code
 java/components/vowelbase: compiling prod code

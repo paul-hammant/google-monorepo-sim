@@ -1,10 +1,11 @@
 import build
+import java
 
 main() {
     b = build.start()
     build.dep(b, "java/components/consonants")
     build.lib(b, "java/junit/junit.jar")
     build.lib(b, "java/hamcrest/hamcrest.jar")
-    build.javac_test(b)
-    build.junit(b)
+    java.javac_test(b)
+    java.junit(b)
 }

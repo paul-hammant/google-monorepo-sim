@@ -3,5 +3,5 @@ import ts
 
 main() {
     b = build.start()
-    ts.tsc(b)
+    ts.tsc_files(b)
 }

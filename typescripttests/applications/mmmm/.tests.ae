@@ -6,6 +6,6 @@ main() {
     build.dep(b, "typescript/applications/mmmm")
     build.npm_dep(b, "libs:javascript/assert")
     build.npm_dep(b, "libs:javascript/mocha")
-    ts.tsc(b)
+    ts.tsc_files(b)
     ts.mocha(b, "target/tests/applications/mmmm/js/typescripttests/applications/mmmm/MmmmU0021Tests.js")
 }

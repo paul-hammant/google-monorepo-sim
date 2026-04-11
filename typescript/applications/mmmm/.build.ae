@@ -6,5 +6,5 @@ main() {
     build.dep(b, "typescript/components/explanation")
     build.dep(b, "go/components/nasal")
     build.npm_dep(b, "libs:javascript/ffi-napi")
-    ts.tsc(b)
+    ts.tsc_files(b)
 }

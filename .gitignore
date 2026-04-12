@@ -10,6 +10,9 @@ __pycache__/
 .aeb/
 rust/**/Cargo.toml
 rust/**/Cargo.lock
+**/.*.generated.csproj
+**/bin/
+**/obj/
 
 # aetherBuild modules
 lib/build

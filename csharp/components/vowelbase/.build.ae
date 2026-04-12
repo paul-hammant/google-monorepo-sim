@@ -1,0 +1,11 @@
+import build
+import dotnet
+import dotnet (target_framework, root_namespace)
+
+main() {
+    b = build.start()
+    dotnet.build_project(b) {
+        target_framework("net10.0")
+        root_namespace("Components.VowelBase")
+    }
+}

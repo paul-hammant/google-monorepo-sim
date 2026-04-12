@@ -1,0 +1,14 @@
+import build
+import dotnet
+import dotnet (target_framework, root_namespace, output_type)
+
+main() {
+    b = build.start()
+    build.dep(b, "csharp/components/greek/.build.ae")
+    build.dep(b, "csharp/components/vowelbase/.build.ae")
+    dotnet.build_project(b) {
+        target_framework("net10.0")
+        output_type("Exe")
+        root_namespace("AlgorithmsSolveProblemsInGreek")
+    }
+}

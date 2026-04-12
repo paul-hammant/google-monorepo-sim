@@ -3,6 +3,6 @@ import python
 
 main() {
     b = build.start()
-    build.dep(b, "python/components/diphthongs")
+    build.dep(b, "python/components/diphthongs/.build.ae")
     python.pytest(b)
 }

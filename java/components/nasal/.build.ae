@@ -3,6 +3,6 @@ import java
 
 main() {
     b = build.start()
-    build.dep(b, "go/components/nasal")
+    build.dep(b, "go/components/nasal/.build.ae")
     java.javac(b)
 }

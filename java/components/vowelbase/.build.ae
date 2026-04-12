@@ -3,6 +3,6 @@ import java
 
 main() {
     b = build.start()
-    build.dep(b, "rust/components/vowelbase")
+    build.dep(b, "rust/components/vowelbase/.build.ae")
     java.javac(b)
 }

@@ -1,11 +1,15 @@
 import build
 import rust
-import rust (lib_name)
+import rust (lib_name, crate_name, edition, crate_type, lib_path, path_dep)
 
 main() {
     b = build.start()
-    build.cargo_dep(b, "libs:rust/jni")
-    rust.cargo_build(b) {
+    rust.cargo_project(b) {
+        crate_name("vowelbase")
+        edition("2021")
+        crate_type("cdylib")
+        lib_path("lib.rs")
+        path_dep("jni", "../../../libs/rust/registry/vendor/jni")
         lib_name("libvowelbase.so")
     }
 }

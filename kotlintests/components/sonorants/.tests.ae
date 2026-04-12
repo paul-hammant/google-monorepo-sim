@@ -3,7 +3,7 @@ import kotlin
 
 main() {
     b = build.start()
-    build.dep(b, "kotlin/components/sonorants")
+    build.dep(b, "kotlin/components/sonorants/.build.ae")
     kotlin.kotlinc_test(b)
     kotlin.kotlin_test(b, "components.sonorants.SonorantsTestsKt")
 }

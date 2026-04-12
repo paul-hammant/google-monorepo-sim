@@ -3,8 +3,8 @@ import ts
 
 main() {
     b = build.start()
-    build.dep(b, "typescript/components/explanation")
-    build.dep(b, "go/components/nasal")
+    build.dep(b, "typescript/components/explanation/.build.ae")
+    build.dep(b, "go/components/nasal/.build.ae")
     build.npm_dep(b, "libs:javascript/ffi-napi")
     ts.tsc_files(b)
 }

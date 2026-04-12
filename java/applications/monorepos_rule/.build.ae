@@ -3,10 +3,10 @@ import java
 
 main() {
     b = build.start()
-    build.dep(b, "java/components/fricatives")
-    build.dep(b, "java/components/nasal")
-    build.dep(b, "kotlin/components/sonorants")
-    build.dep(b, "java/components/voiceless")
-    build.dep(b, "java/components/vowels")
+    build.dep(b, "java/components/fricatives/.build.ae")
+    build.dep(b, "java/components/nasal/.build.ae")
+    build.dep(b, "kotlin/components/sonorants/.build.ae")
+    build.dep(b, "java/components/voiceless/.build.ae")
+    build.dep(b, "java/components/vowels/.build.ae")
     java.javac(b)
 }

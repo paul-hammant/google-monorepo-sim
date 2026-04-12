@@ -1,0 +1,7 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "javatests/applications/monorepos_rule/.tests.ae")
+    build.dep(b, "java/applications/monorepos_rule/.dist.ae")
+}

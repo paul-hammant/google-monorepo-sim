@@ -3,7 +3,7 @@ import java
 
 main() {
     b = build.start()
-    build.dep(b, "java/components/sibilants")
+    build.dep(b, "java/components/sibilants/.build.ae")
     build.lib(b, "java/junit/junit.jar")
     build.lib(b, "java/hamcrest/hamcrest.jar")
     java.javac_test(b)

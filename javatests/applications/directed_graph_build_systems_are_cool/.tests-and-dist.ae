@@ -1,0 +1,7 @@
+import build
+
+main() {
+    b = build.start()
+    build.dep(b, "javatests/applications/directed_graph_build_systems_are_cool/.tests.ae")
+    build.dep(b, "java/applications/directed_graph_build_systems_are_cool/.dist.ae")
+}

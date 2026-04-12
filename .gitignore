@@ -8,7 +8,8 @@ __pycache__/
 *.iml
 /.buildStepsDoneLastExecution
 .aeb/
-.Cargo.generated.toml
+rust/**/Cargo.toml
+rust/**/Cargo.lock
 
 # aetherBuild modules
 lib/build

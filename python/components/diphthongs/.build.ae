@@ -1,0 +1,12 @@
+import build
+import python
+import python (pip)
+
+main() {
+    b = build.start()
+    python.install(b) {
+        pip("pytest")
+    }
+    python.lint(b)
+    python.typecheck(b)
+}

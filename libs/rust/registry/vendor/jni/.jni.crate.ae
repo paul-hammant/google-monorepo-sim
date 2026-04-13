@@ -1,0 +1,17 @@
+// jni.crate.ae — JNI Rust bindings (vendored crate)
+//
+// upstream: https://github.com/jni-rs/jni-rs
+// version:  0.20
+// license:  MIT OR Apache-2.0
+//
+// Consumers that dep on this file get jni registered as a path dep in
+// their generated Cargo.toml, pointing at the vendored sources in
+// libs/rust/registry/vendor/jni/.
+
+import build
+import rust
+
+main() {
+    b = build.start()
+    rust.crate_vendored(b, "jni~../../../libs/rust/registry/vendor/jni")
+}

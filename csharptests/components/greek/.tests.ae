@@ -1,19 +1,17 @@
 import build
 import dotnet
-import dotnet (target_framework, root_namespace, nuget, assembly_name, test_project)
+import dotnet (target_framework, root_namespace, assembly_name, test_project)
 
 main() {
     b = build.start()
     build.dep(b, "csharp/components/greek/.build.ae")
+    build.dep(b, "libs/dotnet/xunit/.xunit.nupkg.ae")
+    build.dep(b, "libs/dotnet/Shouldly/.Shouldly.nupkg.ae")
     dotnet.build_project(b) {
         target_framework("net10.0")
         assembly_name("GreekTests")
         root_namespace("Components.Greek.Tests")
         test_project()
-        nuget("xunit:2.9.3")
-        nuget("xunit.runner.visualstudio:3.1.1")
-        nuget("Microsoft.NET.Test.Sdk:17.14.0")
-        nuget("Shouldly:4.3.0")
     }
     dotnet.test(b)
 }

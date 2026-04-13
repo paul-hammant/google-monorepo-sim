@@ -1,0 +1,15 @@
+// assert.npm.ae — Node.js assert types for TypeScript
+//
+// upstream: https://github.com/nodejs/node (built-in, types only)
+// version:  built-in
+// license:  MIT
+//
+// Registers @types/assert from libs/javascript/npm_vendored.
+
+import build
+import ts
+
+main() {
+    b = build.start()
+    ts.npm_vendored(b, "libs:javascript/assert")
+}

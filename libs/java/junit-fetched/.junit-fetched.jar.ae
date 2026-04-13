@@ -1,0 +1,20 @@
+// junit-fetched.jar.ae — JUnit 4 fetched from Maven Central
+//
+// upstream: https://github.com/junit-team/junit4
+// version:  4.13.2
+// license:  EPL-1.0
+//
+// Unlike libs/java/junit/.junit.jar.ae (which points at a vendored jar file),
+// this .jar.ae resolves junit from Maven Central via aeb-resolve.jar. The
+// consumer API is identical — dep on this file to get junit + hamcrest on
+// the classpath.
+
+import build
+import java
+
+main() {
+    b = build.start()
+    java.jar_registry(b, "junit:junit:4.13.2")
+    java.jar_registry(b, "org.hamcrest:hamcrest-core:1.3")
+    java.jar_registry_finalize(b)
+}

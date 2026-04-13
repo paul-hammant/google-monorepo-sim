@@ -11,5 +11,5 @@ import java
 
 main() {
     b = build.start()
-    java.vendored_jar(b, "libs/java/hamcrest/hamcrest.jar")
+    java.jar_vendored(b, "libs/java/hamcrest/hamcrest.jar")
 }

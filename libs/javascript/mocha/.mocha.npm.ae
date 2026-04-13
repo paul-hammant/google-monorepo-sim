@@ -1,0 +1,15 @@
+// mocha.npm.ae — Mocha test framework for Node.js
+//
+// upstream: https://github.com/mochajs/mocha
+// version:  in libs/javascript/npm_vendored
+// license:  MIT
+//
+// Registers @types/mocha + mocha runner from libs/javascript/npm_vendored.
+
+import build
+import ts
+
+main() {
+    b = build.start()
+    ts.npm_vendored(b, "libs:javascript/mocha")
+}

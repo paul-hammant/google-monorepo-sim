@@ -1,0 +1,19 @@
+// xunit.nupkg.ae — xUnit test framework + runner + test SDK
+//
+// upstream: https://github.com/xunit/xunit
+// versions: xunit 2.9.3, xunit.runner.visualstudio 3.1.1, Microsoft.NET.Test.Sdk 17.14.0
+// license:  Apache-2.0
+//
+// Bundles the three NuGet packages needed to run xunit tests under
+// `dotnet test`. Consumers dep on this single file rather than listing
+// all three coords individually.
+
+import build
+import dotnet
+
+main() {
+    b = build.start()
+    dotnet.nuget_registry(b, "xunit~2.9.3")
+    dotnet.nuget_registry(b, "xunit.runner.visualstudio~3.1.1")
+    dotnet.nuget_registry(b, "Microsoft.NET.Test.Sdk~17.14.0")
+}

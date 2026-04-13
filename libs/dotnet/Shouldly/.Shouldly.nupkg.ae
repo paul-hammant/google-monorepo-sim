@@ -1,0 +1,17 @@
+// Shouldly.nupkg.ae — Shouldly assertion library fetched from NuGet
+//
+// upstream: https://github.com/shouldly/shouldly
+// version:  4.3.0
+// license:  BSD-3-Clause
+//
+// Consumers that dep on this file get Shouldly registered as a
+// <PackageReference> in their generated .csproj. dotnet build handles
+// the NuGet restore.
+
+import build
+import dotnet
+
+main() {
+    b = build.start()
+    dotnet.nuget_registry(b, "Shouldly~4.3.0")
+}

@@ -1,0 +1,15 @@
+// junit.jar.ae — JUnit 4 vendored library
+//
+// upstream: https://github.com/junit-team/junit4
+// version:  4.12
+// license:  EPL-1.0
+//
+// Consumers that dep on this file get junit.jar on their classpath.
+
+import build
+import java
+
+main() {
+    b = build.start()
+    java.vendored_jar(b, "libs/java/junit/junit.jar")
+}

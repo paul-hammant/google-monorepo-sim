@@ -1,0 +1,15 @@
+// hamcrest.jar.ae — Hamcrest matchers (used by JUnit 4)
+//
+// upstream: https://github.com/hamcrest/JavaHamcrest
+// version:  1.3
+// license:  BSD-3-Clause
+//
+// Consumers that dep on this file get hamcrest.jar on their classpath.
+
+import build
+import java
+
+main() {
+    b = build.start()
+    java.vendored_jar(b, "libs/java/hamcrest/hamcrest.jar")
+}

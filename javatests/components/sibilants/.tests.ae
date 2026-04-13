@@ -4,8 +4,8 @@ import java
 main() {
     b = build.start()
     build.dep(b, "java/components/sibilants/.build.ae")
-    build.lib(b, "java/junit/junit.jar")
-    build.lib(b, "java/hamcrest/hamcrest.jar")
+    build.dep(b, "libs/java/junit/.junit.jar.ae")
+    build.dep(b, "libs/java/hamcrest/.hamcrest.jar.ae")
     java.javac_test(b)
     java.junit(b)
 }

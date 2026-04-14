@@ -1,0 +1,18 @@
+// vowelbase test — exercises the Rust libvowelbase.so via the Aether FFI.
+//
+// The Rust function prints to stdout without returning a value, so the test
+// passes if the binary links, runs, and exits 0. We invoke the FFI several
+// times to catch any obvious mis-linking.
+
+extern Aether_components_vowelbase_printString(input: string)
+
+main() {
+    print("vowelbase: ")
+    Aether_components_vowelbase_printString("a")
+    Aether_components_vowelbase_printString("e")
+    Aether_components_vowelbase_printString("i")
+    Aether_components_vowelbase_printString("o")
+    Aether_components_vowelbase_printString("u")
+    println("")
+    println("PASS")
+}

@@ -1,0 +1,30 @@
+// vowelbase — Aether component that prints vowels via the Rust libvowelbase.so.
+//
+// The Rust crate at rust/components/vowelbase exposes a C-ABI symbol
+// `Aether_components_vowelbase_printString(const char*)` that this program
+// calls via Aether's `extern` mechanism. The .so is linked at build time and
+// found via -Wl,-rpath at run time — see lib/aether/module.ae.
+
+extern Aether_components_vowelbase_printString(input: string)
+extern string_length(s: string) -> int
+extern string_substring(s: string, start: int, end: int) -> string
+
+print_vowel(s: string) {
+    Aether_components_vowelbase_printString(s)
+}
+
+print_vowels(s: string) {
+    // The Rust side prints raw without a newline; iterate one char at a time.
+    n = string_length(s)
+    i = 0
+    while i < n {
+        ch = string_substring(s, i, i + 1)
+        print_vowel(ch)
+        i = i + 1
+    }
+}
+
+main() {
+    print_vowels("aeiou")
+    println("")
+}

@@ -22,6 +22,11 @@ pub extern "C" fn Python_components_vowelbase_printString(input: *const c_char) 
     vowelbase_print(input);
 }
 
+#[no_mangle]
+pub extern "C" fn Aether_components_vowelbase_printString(input: *const c_char) {
+    vowelbase_print(input);
+}
+
 fn vowelbase_print(input: *const c_char) {
     let c_str = unsafe { CStr::from_ptr(input) };
     let s = c_str.to_str().unwrap_or("");

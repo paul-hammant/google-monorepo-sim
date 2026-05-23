@@ -22,3 +22,6 @@ lib/gomod
 lib/rust
 lib/ts
 lib/container
+
+# aeb modules
+.aeb/

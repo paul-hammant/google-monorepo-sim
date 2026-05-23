@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import * as assert from 'assert';
-import { printExclamation } from 'components/explanation/U0021';
+import { printExclamation } from 'typescript/components/explanation/U0021';
 
 describe('Explanation component', () => {
     let capturedOutput = '';

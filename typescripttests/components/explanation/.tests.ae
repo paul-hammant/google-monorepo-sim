@@ -7,5 +7,5 @@ main() {
     build.dep(b, "libs/javascript/assert/.assert.npm.ae")
     build.dep(b, "libs/javascript/mocha/.mocha.npm.ae")
     ts.tsc_files(b)
-    ts.mocha(b, "target/tests/components/explanation/js/typescripttests/components/explanation/ExplanationTests.js")
+    ts.mocha(b, "target/tests/tests/typescripttests/components/explanation/js/typescripttests/components/explanation/ExplanationTests.js")
 }

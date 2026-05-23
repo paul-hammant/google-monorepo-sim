@@ -1,6 +1,6 @@
 import { describe, it, beforeEach, afterEach } from 'mocha';
 import * as assert from 'assert';
-import {main} from 'applications/mmmm/MmmmU0021';
+import {main} from 'typescript/applications/mmmm/MmmmU0021';
 
 describe('MmmmU0021 application', () => {
     let capturedOutput = '';

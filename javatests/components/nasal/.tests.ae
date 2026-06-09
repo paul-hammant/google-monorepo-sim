@@ -1,7 +1,7 @@
 import build
 import java
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "java/components/nasal/.build.ae")
     build.dep(b, "libs/java/junit/.junit.jar.ae")

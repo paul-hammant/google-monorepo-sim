@@ -1,7 +1,7 @@
 import build
 import aether
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "rust/components/vowelbase/.build.ae")
     aether.program_test(b)

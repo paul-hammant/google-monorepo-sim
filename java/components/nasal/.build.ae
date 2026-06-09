@@ -1,7 +1,7 @@
 import build
 import java
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "go/components/nasal/.build.ae")
     java.javac(b)

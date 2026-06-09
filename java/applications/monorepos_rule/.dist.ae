@@ -1,7 +1,7 @@
 import build
 import java
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "java/applications/monorepos_rule/.build.ae")
     java.shade(b, "applications.monorepos_rule.MonoreposRule", "monorepos-rule.jar")

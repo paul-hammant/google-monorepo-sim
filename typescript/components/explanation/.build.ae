@@ -1,7 +1,7 @@
 import build
 import ts
 
-main() {
+aeb(cap) {
     b = build.start()
     ts.tsc_files(b)
 }

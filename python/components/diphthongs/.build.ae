@@ -2,7 +2,7 @@ import build
 import python
 import python (pip)
 
-main() {
+aeb(cap) {
     b = build.start()
     python.install(b) {
         pip("pytest")

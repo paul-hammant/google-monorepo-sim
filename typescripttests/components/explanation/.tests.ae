@@ -1,7 +1,7 @@
 import build
 import ts
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "typescript/components/explanation/.build.ae")
     build.dep(b, "libs/javascript/assert/.assert.npm.ae")

@@ -1,7 +1,7 @@
 import build
 import java
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "java/components/sibilants/.build.ae")
     build.dep(b, "libs/java/junit-fetched/.junit-fetched.jar.ae")

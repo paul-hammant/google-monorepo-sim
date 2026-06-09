@@ -2,7 +2,7 @@ import build
 import dotnet
 import dotnet (target_framework, root_namespace, assembly_name, test_project)
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "csharp/components/greek/.build.ae")
     build.dep(b, "libs/dotnet/xunit/.xunit.nupkg.ae")

@@ -1,7 +1,7 @@
 import build
 import kotlin
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "kotlin/components/sonorants/.build.ae")
     kotlin.kotlinc_test(b)

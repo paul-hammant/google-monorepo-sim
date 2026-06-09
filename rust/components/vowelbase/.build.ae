@@ -2,7 +2,7 @@ import build
 import rust
 import rust (lib_name, crate_name, edition, crate_type, lib_path)
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "libs/rust/registry/vendor/jni/.jni.crate.ae")
     rust.cargo_project(b) {

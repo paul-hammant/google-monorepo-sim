@@ -1,7 +1,7 @@
 import build
 import go
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "go/components/nasal/.build.ae")
     go.go_test(b)

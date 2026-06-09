@@ -2,7 +2,7 @@ import build
 import dotnet
 import dotnet (target_framework, root_namespace, output_type)
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "csharp/components/greek/.build.ae")
     build.dep(b, "csharp/components/vowelbase/.build.ae")

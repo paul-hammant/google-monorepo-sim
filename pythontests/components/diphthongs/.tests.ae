@@ -1,7 +1,7 @@
 import build
 import python
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "python/components/diphthongs/.build.ae")
     python.pytest(b)

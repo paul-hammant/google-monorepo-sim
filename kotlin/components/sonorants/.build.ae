@@ -1,7 +1,7 @@
 import build
 import kotlin
 
-main() {
+aeb(cap) {
     b = build.start()
     kotlin.kotlinc(b)
 }

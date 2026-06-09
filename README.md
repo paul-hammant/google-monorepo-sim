@@ -19,17 +19,25 @@ in the depth-first_recursive_modular_monorepo branch
 
 The monorepo is built using [Aether Build](https://github.com/paul-hammant/aetherBuild),
 a polyglot build system written in [Aether](https://github.com/paul-hammant/aether).
-Each module has a `.build.ae` file declaring its dependencies and build action:
+Each module has a `.build.ae` file declaring its dependencies and build action.
+The entrypoint is `aeb(cap)` — the build receives a capability handle `cap`
+from the trusted aeb host (the same handle that backs `--sandbox` runtime
+containment); a build file never constructs its own authority, it only
+receives it:
 
 ```aether
 import build
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "rust/components/vowelbase")
     build.javac(b)
 }
 ```
+
+(The legacy `main()` spelling still works — aeb lowers both to the same
+context-receiving entrypoint — but `aeb(cap)` is the convention this repo
+demonstrates.)
 
 A single `aeb` invocation scans all `.build.ae`, `.tests.ae`, and `.dist.ae` files,
 topologically sorts the dependency graph, generates one linked native binary, and executes

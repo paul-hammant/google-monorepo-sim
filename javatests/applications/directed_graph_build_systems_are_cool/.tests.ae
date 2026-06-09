@@ -1,7 +1,7 @@
 import build
 import java
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "java/applications/directed_graph_build_systems_are_cool/.build.ae")
     build.dep(b, "libs/java/junit/.junit.jar.ae")

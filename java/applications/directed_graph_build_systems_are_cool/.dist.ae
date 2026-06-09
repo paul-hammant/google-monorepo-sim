@@ -1,7 +1,7 @@
 import build
 import java
 
-main() {
+aeb(cap) {
     b = build.start()
     build.dep(b, "java/applications/directed_graph_build_systems_are_cool/.build.ae")
     java.shade(b, "applications.directed_graph_build_systems_are_cool.DirectedGraphBuildSystemsAreCool", "directed-graph-build-systems-are-cool.jar")

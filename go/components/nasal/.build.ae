@@ -1,9 +1,12 @@
 import build
+import build (prereq)
 import go
 import go (build_mode, output_file)
 
 aeb(cap) {
     b = build.start()
+    // States the toolchain this job needs; requester picks aeb-tc:go.
+    prereq(b, "go:1.22")
     go.go_build(b) {
         build_mode("c-shared")
         output_file("libgonasal.so")

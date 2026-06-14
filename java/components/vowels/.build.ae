@@ -1,8 +1,10 @@
 import build
+import build (prereq)
 import java
 
 aeb(cap) {
     b = build.start()
+    prereq(b, "jdk:21")
     build.dep(b, "java/components/vowelbase/.build.ae")
     java.javac(b)
 }

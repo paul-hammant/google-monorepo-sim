@@ -1,8 +1,10 @@
 import build
+import build (prereq)
 import java
 
 aeb(cap) {
     b = build.start()
+    prereq(b, "jdk:21")
     build.dep(b, "java/components/fricatives/.build.ae")
     build.dep(b, "java/components/nasal/.build.ae")
     build.dep(b, "kotlin/components/sonorants/.build.ae")

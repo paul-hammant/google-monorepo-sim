@@ -1,8 +1,10 @@
 import build
+import build (prereq)
 import java
 
 aeb(cap) {
     b = build.start()
+    prereq(b, "jdk:21")
     build.dep(b, "java/components/consonants/.build.ae")
     build.dep(b, "java/components/fricatives/.build.ae")
     build.dep(b, "java/components/glides/.build.ae")

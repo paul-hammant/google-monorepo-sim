@@ -1,9 +1,11 @@
 import build
+import build (prereq)
 import python
 import python (pip)
 
 aeb(cap) {
     b = build.start()
+    prereq(b, "python:3.12")
     python.install(b) {
         pip("pytest")
     }

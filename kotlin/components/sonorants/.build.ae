@@ -1,7 +1,9 @@
 import build
+import build (prereq)
 import kotlin
 
 aeb(cap) {
     b = build.start()
+    prereq(b, "kotlin:2.0")
     kotlin.kotlinc(b)
 }

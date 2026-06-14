@@ -1,7 +1,9 @@
 import build
+import build (prereq)
 import java
 
 aeb(cap) {
     b = build.start()
+    prereq(b, "jdk:21")
     java.javac(b)
 }

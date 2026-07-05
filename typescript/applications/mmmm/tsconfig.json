@@ -1,8 +1,8 @@
 {
-  "extends": "../../../target/typescript/applications/mmmm/base-tsconfig.json",
+  "extends": "../../../target/build/typescript/applications/mmmm/base-tsconfig.json",
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
-    "outDir": "../../../target/typescript/applications/mmmm/js/typescript/applications/mmmm",
+    "outDir": "../../../target/build/typescript/applications/mmmm/js/typescript/applications/mmmm",
     "rootDir": "./",
     "module": "commonjs",
     "target": "es2016",

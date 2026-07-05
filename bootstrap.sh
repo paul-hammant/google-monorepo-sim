@@ -7,7 +7,7 @@
 # {lang}/components/** and {lang}/applications/**). Once the toolchain is
 # ready, build everything the way the README documents:
 #
-#     AETHER="$(command -v ae)" aeb
+#     AETHER="$(command -v ae)" aeb --scan '.build.ae'
 #
 # The toolchains are installed via their canonical remote installers — they
 # work from a bare clone (no sibling checkouts), install released builds to a
@@ -83,10 +83,13 @@ say "using aeb: $(command -v aeb)"
 case ":$PATH:" in *":$PREFIX/bin:"*) : ;; *) say "tip: add '$PREFIX/bin' to your shell PATH permanently";; esac
 cat <<EOF
 
-Toolchain ready. To build the whole monorepo (18 compile + 2 dist + 17 test):
+Toolchain ready. To compile the whole monorepo:
 
     cd "$HERE"
-    AETHER="\$(command -v ae)" aeb
+    AETHER="\$(command -v ae)" aeb --scan '.build.ae'
+
+(Name a specific .tests.ae / .dist.ae leaf to run its tests or package it —
+current aeb needs a named target or a --scan glob; bare 'aeb' builds nothing.)
 
 Language toolchains (JDK 21+, Rust/Cargo, Kotlin, Go 1.24+, Node 22+ & tsc,
 dotnet) must be installed separately — see the README "Prerequisites" section.

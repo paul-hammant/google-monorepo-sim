@@ -1,8 +1,8 @@
 {
-  "extends": "../../../target/typescript/components/explanation/base-tsconfig.json",
+  "extends": "../../../target/build/typescript/components/explanation/base-tsconfig.json",
   "compilerOptions": {
     "ignoreDeprecations": "6.0",
-    "outDir": "../../../target/typescript/components/explanation/js/typescript/components/explanation",
+    "outDir": "../../../target/build/typescript/components/explanation/js/typescript/components/explanation",
     "rootDir": "./",
     "module": "commonjs",
     "target": "es2016",

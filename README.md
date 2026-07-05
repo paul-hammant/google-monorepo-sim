@@ -39,9 +39,11 @@ aeb(cap) {
 context-receiving entrypoint — but `aeb(cap)` is the convention this repo
 demonstrates.)
 
-A single `aeb` invocation scans all `.build.ae`, `.tests.ae`, and `.dist.ae` files,
-topologically sorts the dependency graph, generates one linked native binary, and executes
-everything in a single process with an in-memory visited-module map.
+A single `aeb --scan '<glob>'` invocation walks the tree for every `.ae` node whose
+basename matches the glob, topologically sorts the dependency graph, generates one linked
+native binary, and executes everything in a single process with an in-memory visited-module
+map. (Current aeb requires a named target or an explicit `--scan` glob — a bare `aeb` with
+no arguments no longer builds the whole tree.)
 
 ### Prerequisites
 
@@ -68,7 +70,12 @@ go version
 ### Building everything
 
 ```bash
-AETHER=/path/to/ae aeb
+# compile every module (the .build.ae DAG)
+AETHER=/path/to/ae aeb --scan '.build.ae'
+
+# or build/run a single leaf and its deps by naming it
+AETHER=/path/to/ae aeb java/applications/monorepos_rule/.dist.ae
+AETHER=/path/to/ae aeb typescripttests/components/explanation/.tests.ae
 ```
 
 Output:

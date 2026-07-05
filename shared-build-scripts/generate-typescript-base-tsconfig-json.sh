@@ -58,16 +58,27 @@ for dep_path_full in $deps_source_paths_string; do
 
     TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --arg key "$key" --argjson value "$json_value" '.compilerOptions.paths[$key] = $value')
   elif [[ "$dep_path_full" == */target/*/js ]]; then
-    # New format - fully-qualified path to transpiled .js directory
-    # Extract module path from the full path: /path/to/root/target/components/explanation/js -> components/explanation
+    # New format - fully-qualified path to transpiled .js directory.
+    # Under aeb's buildtype-prefixed target-dir scheme the js dir is
+    #   <root>/target/<buildtype>/<lang-module-path>/js
+    # e.g. .../target/build/typescript/components/explanation/js
+    # so stripping "<root>/target/" leaves "<buildtype>/<lang-module-path>".
     module_path_only="${dep_path_full#$root/target/}"
     module_path_only="${module_path_only%/js}"
+
+    # The path-map KEY and the js OUTPUT subpath are keyed on the SOURCE
+    # module path (what `import`s use and what tsc's outDir mirrors) — NOT
+    # the on-disk target dir. Drop the leading buildtype segment
+    # (build/ | tests/ | dist/) so imports stay `typescript/...`, not
+    # `build/typescript/...`, and the value points at the real
+    # js/<lang-module-path> tree tsc actually emits.
+    import_path="${module_path_only#*/}"
 
     # Calculate the relative path from the consumer's source directory to the dependency's js directory
     relative_target_path=$(realpath --relative-to="$consumer_module_source_dir" "$dep_path_full")
 
-    key="$module_path_only/*"
-    value="$relative_target_path/$module_path_only/*"
+    key="$import_path/*"
+    value="$relative_target_path/$import_path/*"
     json_value="[\"$value\"]"
 
     TSCONFIG_CONTENT=$(echo "$TSCONFIG_CONTENT" | jq --arg key "$key" --argjson value "$json_value" '.compilerOptions.paths[$key] = $value')

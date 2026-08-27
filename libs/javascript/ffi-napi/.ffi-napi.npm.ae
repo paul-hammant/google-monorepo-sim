@@ -8,10 +8,11 @@
 // npm_deps_including_transitive artifact. The actual package lives in
 // libs/javascript/npm_vendored/node_modules/ffi-napi-v22/.
 
-import build
+import bldr
 import ts
 
 main() {
-    b = build.start()
-    ts.npm_vendored(b, "libs:javascript/ffi-napi")
+    bldr.build() {
+        ts.npm_vendored("libs:javascript/ffi-napi")
+    }
 }

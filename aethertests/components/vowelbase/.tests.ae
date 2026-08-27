@@ -1,8 +1,9 @@
-import build
+import bldr
 import aether
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "rust/components/vowelbase/.build.ae")
-    aether.program_test(b)
+    bldr.build() {
+        dep("rust/components/vowelbase/.build.ae")
+        aether.program_test()
+    }
 }

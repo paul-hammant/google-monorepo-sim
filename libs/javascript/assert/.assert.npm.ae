@@ -6,10 +6,11 @@
 //
 // Registers @types/assert from libs/javascript/npm_vendored.
 
-import build
+import bldr
 import ts
 
 main() {
-    b = build.start()
-    ts.npm_vendored(b, "libs:javascript/assert")
+    bldr.build() {
+        ts.npm_vendored("libs:javascript/assert")
+    }
 }

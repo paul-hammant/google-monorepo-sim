@@ -1,9 +1,10 @@
-import build
+import bldr
 import kotlin
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "kotlin/components/sonorants/.build.ae")
-    kotlin.kotlinc_test(b)
-    kotlin.kotlin_test(b, "components.sonorants.SonorantsTestsKt")
+    bldr.build() {
+        dep("kotlin/components/sonorants/.build.ae")
+        kotlin.kotlinc_test()
+        kotlin.kotlin_test("components.sonorants.SonorantsTestsKt")
+    }
 }

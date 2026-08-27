@@ -1,11 +1,12 @@
-import build
+import bldr
 import java
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "java/components/voiced/.build.ae")
-    build.dep(b, "libs/java/junit/.junit.jar.ae")
-    build.dep(b, "libs/java/hamcrest/.hamcrest.jar.ae")
-    java.javac_test(b)
-    java.junit(b)
+    bldr.build() {
+        dep("java/components/voiced/.build.ae")
+        dep("libs/java/junit/.junit.jar.ae")
+        dep("libs/java/hamcrest/.hamcrest.jar.ae")
+        java.javac_test()
+        java.junit()
+    }
 }

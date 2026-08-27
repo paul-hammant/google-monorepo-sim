@@ -1,10 +1,11 @@
-import build
+import bldr
 import java
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "java/components/sibilants/.build.ae")
-    build.dep(b, "libs/java/junit-fetched/.junit-fetched.jar.ae")
-    java.javac_test(b)
-    java.junit(b)
+    bldr.build() {
+        dep("java/components/sibilants/.build.ae")
+        dep("libs/java/junit-fetched/.junit-fetched.jar.ae")
+        java.javac_test()
+        java.junit()
+    }
 }

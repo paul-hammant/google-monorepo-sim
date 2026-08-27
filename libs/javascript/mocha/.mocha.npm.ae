@@ -6,10 +6,11 @@
 //
 // Registers @types/mocha + mocha runner from libs/javascript/npm_vendored.
 
-import build
+import bldr
 import ts
 
 main() {
-    b = build.start()
-    ts.npm_vendored(b, "libs:javascript/mocha")
+    bldr.build() {
+        ts.npm_vendored("libs:javascript/mocha")
+    }
 }

@@ -8,12 +8,13 @@
 // `dotnet test`. Consumers dep on this single file rather than listing
 // all three coords individually.
 
-import build
+import bldr
 import dotnet
 
 main() {
-    b = build.start()
-    dotnet.nuget_registry(b, "xunit~2.9.3")
-    dotnet.nuget_registry(b, "xunit.runner.visualstudio~3.1.1")
-    dotnet.nuget_registry(b, "Microsoft.NET.Test.Sdk~17.14.0")
+    bldr.build() {
+        dotnet.nuget_registry("xunit~2.9.3")
+        dotnet.nuget_registry("xunit.runner.visualstudio~3.1.1")
+        dotnet.nuget_registry("Microsoft.NET.Test.Sdk~17.14.0")
+    }
 }

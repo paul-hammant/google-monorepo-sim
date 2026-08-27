@@ -1,9 +1,10 @@
-import build
-import build (prereq)
+import bldr
+import bldr (prereq)
 import kotlin
 
 aeb(cap) {
-    b = build.start()
-    prereq(b, "kotlin:2.0")
-    kotlin.kotlinc(b)
+    bldr.build() {
+        prereq("kotlin:2.0")
+        kotlin.kotlinc()
+    }
 }

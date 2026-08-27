@@ -1,10 +1,11 @@
-import build
+import bldr
 import ts
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "typescript/components/explanation/.build.ae")
-    build.dep(b, "go/components/nasal/.build.ae")
-    build.dep(b, "libs/javascript/ffi-napi/.ffi-napi.npm.ae")
-    ts.tsc_files(b)
+    bldr.build() {
+        dep("typescript/components/explanation/.build.ae")
+        dep("go/components/nasal/.build.ae")
+        dep("libs/javascript/ffi-napi/.ffi-napi.npm.ae")
+        ts.tsc_files()
+    }
 }

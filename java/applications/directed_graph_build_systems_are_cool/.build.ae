@@ -1,18 +1,19 @@
-import build
-import build (prereq)
+import bldr
+import bldr (prereq)
 import java
 
 aeb(cap) {
-    b = build.start()
-    prereq(b, "jdk:21")
-    build.dep(b, "java/components/consonants/.build.ae")
-    build.dep(b, "java/components/fricatives/.build.ae")
-    build.dep(b, "java/components/glides/.build.ae")
-    build.dep(b, "java/components/nasal/.build.ae")
-    build.dep(b, "kotlin/components/sonorants/.build.ae")
-    build.dep(b, "java/components/velar/.build.ae")
-    build.dep(b, "java/components/voiced/.build.ae")
-    build.dep(b, "java/components/voiceless/.build.ae")
-    build.dep(b, "java/components/vowels/.build.ae")
-    java.javac(b)
+    bldr.build() {
+        prereq("jdk:21")
+        dep("java/components/consonants/.build.ae")
+        dep("java/components/fricatives/.build.ae")
+        dep("java/components/glides/.build.ae")
+        dep("java/components/nasal/.build.ae")
+        dep("kotlin/components/sonorants/.build.ae")
+        dep("java/components/velar/.build.ae")
+        dep("java/components/voiced/.build.ae")
+        dep("java/components/voiceless/.build.ae")
+        dep("java/components/vowels/.build.ae")
+        java.javac()
+    }
 }

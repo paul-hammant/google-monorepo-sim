@@ -1,9 +1,10 @@
-import build
-import build (prereq)
+import bldr
+import bldr (prereq)
 import java
 
 aeb(cap) {
-    b = build.start()
-    prereq(b, "jdk:21")
-    java.javac(b)
+    bldr.build() {
+        prereq("jdk:21")
+        java.javac()
+    }
 }

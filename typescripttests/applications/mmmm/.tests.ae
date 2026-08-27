@@ -1,11 +1,12 @@
-import build
+import bldr
 import ts
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "typescript/applications/mmmm/.build.ae")
-    build.dep(b, "libs/javascript/assert/.assert.npm.ae")
-    build.dep(b, "libs/javascript/mocha/.mocha.npm.ae")
-    ts.tsc_files(b)
-    ts.mocha(b, "target/tests/typescripttests/applications/mmmm/js/typescripttests/applications/mmmm/MmmmU0021Tests.js")
+    bldr.build() {
+        dep("typescript/applications/mmmm/.build.ae")
+        dep("libs/javascript/assert/.assert.npm.ae")
+        dep("libs/javascript/mocha/.mocha.npm.ae")
+        ts.tsc_files()
+        ts.mocha("target/tests/typescripttests/applications/mmmm/js/typescripttests/applications/mmmm/MmmmU0021Tests.js")
+    }
 }

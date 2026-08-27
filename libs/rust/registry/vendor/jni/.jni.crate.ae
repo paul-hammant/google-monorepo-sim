@@ -8,10 +8,11 @@
 // their generated Cargo.toml, pointing at the vendored sources in
 // libs/rust/registry/vendor/jni/.
 
-import build
+import bldr
 import rust
 
 main() {
-    b = build.start()
-    rust.crate_vendored(b, "jni~../../../libs/rust/registry/vendor/jni")
+    bldr.build() {
+        rust.crate_vendored("jni~../../../libs/rust/registry/vendor/jni")
+    }
 }

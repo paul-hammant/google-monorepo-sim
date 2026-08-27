@@ -1,11 +1,12 @@
-import build
-import build (prereq)
+import bldr
+import bldr (prereq)
 import java
 
 aeb(cap) {
-    b = build.start()
-    // States the toolchain this job needs. A remote agent's requester reads
-    // `aeb --prereqs` and selects aeb-tc:jdk21 as the per-dispatch image.
-    prereq(b, "jdk:21")
-    java.javac(b)
+    bldr.build() {
+        // States the toolchain this job needs. A remote agent's requester reads
+        // `aeb --prereqs` and selects aeb-tc:jdk21 as the per-dispatch image.
+        prereq("jdk:21")
+        java.javac()
+    }
 }

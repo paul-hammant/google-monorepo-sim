@@ -1,7 +1,8 @@
-import build
+import bldr
 
 main() {
-    b = build.start()
-    build.dep(b, "javatests/applications/directed_graph_build_systems_are_cool/.tests.ae")
-    build.dep(b, "java/applications/directed_graph_build_systems_are_cool/.dist.ae")
+    bldr.build() {
+        dep("javatests/applications/directed_graph_build_systems_are_cool/.tests.ae")
+        dep("java/applications/directed_graph_build_systems_are_cool/.dist.ae")
+    }
 }

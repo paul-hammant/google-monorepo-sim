@@ -1,20 +1,21 @@
-import build
-import build (prereq)
+import bldr
+import bldr (prereq)
 import rust
 import rust (lib_name, crate_name, edition, crate_type, lib_path)
 
 aeb(cap) {
-    b = build.start()
-    // States the toolchain this job needs (OS-agnostic, canonical). A remote
-    // agent's requester reads `aeb --prereqs` and selects e.g. aeb-tc:rust as
-    // the per-dispatch image — the bare host need not have rust at all.
-    prereq(b, "rust:1.75")
-    build.dep(b, "libs/rust/registry/vendor/jni/.jni.crate.ae")
-    rust.cargo_project(b) {
-        crate_name("vowelbase")
-        edition("2021")
-        crate_type("cdylib")
-        lib_path("lib.rs")
-        lib_name("libvowelbase.so")
+    bldr.build() {
+        // States the toolchain this job needs (OS-agnostic, canonical). A remote
+        // agent's requester reads `aeb --prereqs` and selects e.g. aeb-tc:rust as
+        // the per-dispatch image — the bare host need not have rust at all.
+        prereq("rust:1.75")
+        dep("libs/rust/registry/vendor/jni/.jni.crate.ae")
+        rust.cargo_project() {
+            crate_name("vowelbase")
+            edition("2021")
+            crate_type("cdylib")
+            lib_path("lib.rs")
+            lib_name("libvowelbase.so")
+        }
     }
 }

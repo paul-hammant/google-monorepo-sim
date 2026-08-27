@@ -1,8 +1,9 @@
-import build
+import bldr
 import go
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "go/components/nasal/.build.ae")
-    go.go_test(b)
+    bldr.build() {
+        dep("go/components/nasal/.build.ae")
+        go.go_test()
+    }
 }

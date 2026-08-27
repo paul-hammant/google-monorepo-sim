@@ -1,8 +1,9 @@
-import build
+import bldr
 import python
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "python/components/diphthongs/.build.ae")
-    python.pytest(b)
+    bldr.build() {
+        dep("python/components/diphthongs/.build.ae")
+        python.pytest()
+    }
 }

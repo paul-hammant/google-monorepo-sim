@@ -1,14 +1,15 @@
-import build
-import build (prereq)
+import bldr
+import bldr (prereq)
 import python
 import python (pip)
 
 aeb(cap) {
-    b = build.start()
-    prereq(b, "python:3.12")
-    python.install(b) {
-        pip("pytest")
+    bldr.build() {
+        prereq("python:3.12")
+        python.install() {
+            pip("pytest")
+        }
+        python.lint()
+        python.typecheck()
     }
-    python.lint(b)
-    python.typecheck(b)
 }

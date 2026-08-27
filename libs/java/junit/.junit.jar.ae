@@ -6,10 +6,11 @@
 //
 // Consumers that dep on this file get junit.jar on their classpath.
 
-import build
+import bldr
 import java
 
 main() {
-    b = build.start()
-    java.jar_vendored(b, "libs/java/junit/junit.jar")
+    bldr.build() {
+        java.jar_vendored("libs/java/junit/junit.jar")
+    }
 }

@@ -8,10 +8,11 @@
 // <PackageReference> in their generated .csproj. dotnet build handles
 // the NuGet restore.
 
-import build
+import bldr
 import dotnet
 
 main() {
-    b = build.start()
-    dotnet.nuget_registry(b, "Shouldly~4.3.0")
+    bldr.build() {
+        dotnet.nuget_registry("Shouldly~4.3.0")
+    }
 }

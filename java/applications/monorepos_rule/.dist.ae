@@ -1,8 +1,9 @@
-import build
+import bldr
 import java
 
 aeb(cap) {
-    b = build.start()
-    build.dep(b, "java/applications/monorepos_rule/.build.ae")
-    java.shade(b, "applications.monorepos_rule.MonoreposRule", "monorepos-rule.jar")
+    bldr.build() {
+        dep("java/applications/monorepos_rule/.build.ae")
+        java.shade("applications.monorepos_rule.MonoreposRule", "monorepos-rule.jar")
+    }
 }
